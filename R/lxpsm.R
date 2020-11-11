@@ -1,4 +1,35 @@
-lx.psm <- function(x, y = "Y", intercept = T,
+#' Write latex math equation for rmarkdown file
+#'
+#' @param x character
+#' @param y character
+#' @param intercept logical
+#' @param greek.g character
+#' @param greek.n integer
+#' @param type    character
+#' @param lm.label character
+#' @param obs character
+#' @param n.row integer
+#' @importFrom magrittr %>%
+#' @import tidyverse
+#'
+#' @examples
+#' X <- c(paste0(rep(c("X","Z"),each=4),1:4), "fathedu", "mothedu")
+#' Y <- "lwage"
+#' Greek.g <- c("alpha","beta","lambda")
+#' Greek.n <- c(4,4,2)
+#' Greek.n <- c(4,4,2)
+#' Obs <- "i"
+#' N.row <- 5
+#' Cst <- FALSE
+#'
+#' lx.psm(x =X, y = Y,greek.g = Greek.g, greek.n = Greek.n,
+#'   type = "prm", intercept = Cst , lm.label = "prm",
+#'   obs = Obs, n.row = N.row )
+#'
+
+
+
+lx.psm <- function(x, y = "Y", intercept = TRUE,
                    greek.g = c("beta"), greek.n,
                    type = "prm", lm.label=NULL, obs ="i", n.row){
 
@@ -45,7 +76,7 @@ lx.psm <- function(x, y = "Y", intercept = T,
 
   #n.row <- 3
 
-  x.trim <- if_else(x=="", x, paste0(x, "_", obs))
+  x.trim <- ifelse(x=="", x, paste0(x, "_", obs))
 
   len_x <- length(x.trim)
   breaks <- seq(1, len_x, by = n.row)
@@ -60,7 +91,7 @@ lx.psm <- function(x, y = "Y", intercept = T,
     right_tem <- paste0("&&",par[range], x.trim[range], collapse = "+" )
 
     right_loop <- paste0(right_loop,
-                         if_else(!is.null(right_loop),"\\\\&+", ""),
+                         ifelse(!is.null(right_loop),"\\\\&+", ""),
                          right_tem)
   }
 
@@ -75,13 +106,13 @@ lx.psm <- function(x, y = "Y", intercept = T,
 
 
   whole <- paste0(left,
-                  if_else(type=="prf","",
+                  ifelse(type=="prf","",
                           paste0("_",obs)),
                   "&=", right,  collapse = "" )
 
   cat(
     "$$\\begin{equation}",
-    str_c('\\begin{alignedat}{',999,"}"),
+    paste0('\\begin{alignedat}{',999,"}"),
     whole,
     "\\end{alignedat}",
     # default no equation label
