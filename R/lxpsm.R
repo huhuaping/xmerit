@@ -1,5 +1,6 @@
 #' Write latex math equation for rmarkdown file
 #'
+#'
 #' @param x character
 #' @param y character
 #' @param intercept logical
