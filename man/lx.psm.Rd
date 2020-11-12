@@ -35,6 +35,9 @@ lx.psm(
 
 \item{n.row}{integer}
 }
+\value{
+out
+}
 \description{
 Write latex math equation for rmarkdown file
 }
@@ -48,7 +51,7 @@ Obs <- "i"
 N.row <- 5
 Cst <- FALSE
 
-lx.psm(x =X, y = Y,greek.g = Greek.g, greek.n = Greek.n,
+out <- lx.psm(x =X, y = Y,greek.g = Greek.g, greek.n = Greek.n,
   type = "prm", intercept = Cst , lm.label = "prm",
   obs = Obs, n.row = N.row )
 

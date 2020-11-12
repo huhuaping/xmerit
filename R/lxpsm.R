@@ -11,7 +11,8 @@
 #' @param n.row integer
 #' @importFrom magrittr %>%
 #' @import tidyverse
-#'
+#' @return out
+#' @export lx.psm
 #' @examples
 #' X <- c(paste0(rep(c("X","Z"),each=4),1:4), "fathedu", "mothedu")
 #' Y <- "lwage"
@@ -22,7 +23,7 @@
 #' N.row <- 5
 #' Cst <- FALSE
 #'
-#' lx.psm(x =X, y = Y,greek.g = Greek.g, greek.n = Greek.n,
+#' out <- lx.psm(x =X, y = Y,greek.g = Greek.g, greek.n = Greek.n,
 #'   type = "prm", intercept = Cst , lm.label = "prm",
 #'   obs = Obs, n.row = N.row )
 #'
@@ -110,7 +111,7 @@ lx.psm <- function(x, y = "Y", intercept = TRUE,
                           paste0("_",obs)),
                   "&=", right,  collapse = "" )
 
-  cat(
+  out_lx <-c(
     "$$\\begin{equation}",
     paste0('\\begin{alignedat}{',999,"}"),
     whole,
@@ -118,8 +119,12 @@ lx.psm <- function(x, y = "Y", intercept = TRUE,
     # default no equation label
     if (!is.null(lm.label)) {
       paste0('(\\#eq:',lm.label,')')},
-    "\\end{equation}$$",
-    sep = "\n"
+    "\\end{equation}$$"
   )
 
+  out <- paste0(out_lx, collapse = "\n")
+
+  cat(out_lx, sep = "\n")
+
+  return(out)
 }
