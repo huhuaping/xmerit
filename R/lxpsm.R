@@ -1,4 +1,4 @@
-#' Write latex math equation for rmarkdown file
+#' Write latex math equation of econometrics text for rmarkdown file
 #'
 #'
 #' @param x character

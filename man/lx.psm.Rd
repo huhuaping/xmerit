@@ -2,7 +2,7 @@
 % Please edit documentation in R/lxpsm.R
 \name{lx.psm}
 \alias{lx.psm}
-\title{Write latex math equation for rmarkdown file}
+\title{Write latex math equation of econometrics text for rmarkdown file}
 \usage{
 lx.psm(
   x,
@@ -39,7 +39,7 @@ lx.psm(
 out
 }
 \description{
-Write latex math equation for rmarkdown file
+Write latex math equation of econometrics text for rmarkdown file
 }
 \examples{
 X <- c(paste0(rep(c("X","Z"),each=4),1:4), "fathedu", "mothedu")
