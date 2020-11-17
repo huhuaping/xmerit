@@ -10,21 +10,35 @@ lx.est(
   style = "srf",
   obs = "i",
   opt = c("s", "t"),
+  digits = c(2, 4, 2, 4),
   lm.label = NULL
 )
 }
 \arguments{
-\item{lm.mod}{character}
+\item{lm.mod}{character
+you should use \code{formula()} function}
 
 \item{lm.dt}{data.frame}
 
-\item{style}{character}
+\item{style}{character
+equation style on c("srf", "srm"),
+with default value style="srf"}
 
-\item{obs}{character}
+\item{obs}{character
+lower script for variables on c("i", "t"),
+with default value obs ="i"}
 
-\item{opt}{character}
+\item{opt}{character
+list of "soft" option on c("s", "t", "p"),
+with the default value opt=c("s", "t")}
 
-\item{lm.label}{character}
+\item{digits}{integer
+list of digits specification on coef result,
+with the default value digits=c(2,4,2,4),
+respectively to c(""c,"s", "t", "p")}
+
+\item{lm.label}{character
+default value NULL}
 }
 \value{
 out

@@ -1,11 +1,24 @@
 #' Write latex math equation of lm estimation for rmarkdown file
 #'
 #' @param lm.mod character
+#' you should use `formula()` function
 #' @param lm.dt data.frame
-#' @param style character
-#' @param obs   character
-#' @param opt   character
-#' @param lm.label character
+#' @param style character.
+#' equation style on c("srf", "srm"),
+#' with default value style="srf"
+#' @param obs   character.
+#' lower script for variables on c("i", "t"),
+#'  with default value obs ="i"
+#' @param opt   character.
+#' list of "soft" option on c("s", "t", "p"),
+#' with the default value opt=c("s", "t")
+#' @param digits integer.
+#' list of digits specification on coef result,
+#' with the default value digits=c(2,4,2,4),
+#' respectively to c("c","s", "t", "p")
+#' @param lm.label character.
+#' default value NULL
+#'
 #'
 #' @return out
 #' @export lx.est
@@ -44,8 +57,7 @@
 #' mroz_new <- wooldridge::mroz %>%
 #'   tibble::as_tibble() %>%
 #'   dplyr::select(tidyselect::all_of(c("lwage", "educ", "exper", "fatheduc","motheduc")),
-#'     tidyselect::everything()) #%>%
-#'   #filter(!is.na(dplyr::vars("wage")))
+#'     tidyselect::everything())
 #'
 #' mod_origin <- formula(lwage ~ educ + nwifeinc + exper + I(exper^2) + I(exper^2*city))
 #'
@@ -53,7 +65,7 @@
 #'
 #'
 lx.est<- function(lm.mod, lm.dt, style="srf",
-                  obs="i", opt=c("s", "t"),lm.label =NULL){
+                  obs="i", opt=c("s", "t"), digits=c(2,4,2,4), lm.label =NULL){
   ols.est <- lm(formula = lm.mod, data = lm.dt)
   result <- summary(ols.est)
 
@@ -85,7 +97,7 @@ lx.est<- function(lm.mod, lm.dt, style="srf",
 
   # here we use the function absColumns
   df.val <- df %>%
-    abs.col(digits=c(2,4,2,4))
+    abs.col(digits= digits)
 
   df.sv<- map2_df(.x = df.sign, .y =  df.val, .f = paste0)
 
