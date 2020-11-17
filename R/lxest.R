@@ -9,20 +9,47 @@
 #'
 #' @return out
 #' @export lx.est
+#'
+#' @import magrittr
 #' @import stats
+#' @import utils
+#' @importFrom magrittr %>%
+#' @importFrom tibble as_tibble
+#' @importFrom dplyr rename
+#' @importFrom dplyr mutate_at
+#' @importFrom dplyr mutate_if
+#' @importFrom dplyr matches
+#' @importFrom dplyr select
+#' @importFrom dplyr group_by
+#' @importFrom dplyr group_nest
+#' @importFrom dplyr arrange
+#' @importFrom dplyr vars
+#' @importFrom tidyr unite
+#' @importFrom tidyr gather
+#' @importFrom stringr str_detect
+#' @importFrom stringr str_extract
+#' @importFrom stringr str_replace
+#' @importFrom stringr str_replace_all
+#' @importFrom stringr str_c
+#' @importFrom purrr map2_df
+#' @importFrom purrr map
+#'
+#'
+#'
+#'
 #' @examples
+#' require("magrittr")
+#' require("wooldridge")
 #'
-#' lx_out<- lx.est(lm.mod = mod_origin, lm.dt = mroz)
+#' mroz_new <- wooldridge::mroz %>%
+#'   tibble::as_tibble() %>%
+#'   dplyr::select(tidyselect::all_of(c("lwage", "educ", "exper", "fatheduc","motheduc")),
+#'     tidyselect::everything()) #%>%
+#'   #filter(!is.na(dplyr::vars("wage")))
 #'
-#' mroz <- wooldridge::mroz %>%
-#' as_tibble() %>%
-#'   select(lwage, educ,exper, fatheduc,motheduc,everything()) %>%
-#'              filter(!is.na(wage))
+#' mod_origin <- formula(lwage ~ educ + nwifeinc + exper + I(exper^2) + I(exper^2*city))
 #'
-#'  mod_origin <- formula(lwage ~ educ + nwifeinc +exper+I(exper^2) + I(exper^2*city)  )
-#'  ols_origin <- lm(formula = mod_origin, data = mroz)
-#'
-#' lx_out<- lx.est(lm.mod = mod_origin, lm.dt = mroz)
+#' lx_out <- lx.est(lm.mod = mod_origin, lm.dt = mroz_new)
 #'
 #'
 lx.est<- function(lm.mod, lm.dt, style="srf",
@@ -37,7 +64,7 @@ lx.est<- function(lm.mod, lm.dt, style="srf",
   x.trim <- x %>%
     as_tibble() %>%
     rename("vx"="value") %>%
-    mutate(vars = if_else(str_detect(vx, "^I\\(|Intercept"),
+    mutate(vars = ifelse(str_detect(vx, "^I\\(|Intercept"),
                           str_extract(vx, "(?<=\\()(.+)(?=\\))"),
                           vx)) %>%
     mutate(vars = str_replace(vars, "Intercept", "")) %>%
@@ -66,7 +93,7 @@ lx.est<- function(lm.mod, lm.dt, style="srf",
   df.cat <- get.block(dt = df.sv, n.row = 3)
   df.x <- bind_cols(x.trim, df.cat)
   # option for the style
-  left <- paste0(if_else(style == "srf", "\\widehat{", "{"),
+  left <- paste0(ifelse(style == "srf", "\\widehat{", "{"),
                  Y,"}")
 
   body_hard <- df.x %>%

@@ -6,6 +6,15 @@
 #' @return out
 #' @export get.block
 #' @import tidyverse
+#' @importFrom dplyr rename_at
+#' @importFrom dplyr mutate
+#' @importFrom dplyr bind_cols
+#' @importFrom tidyselect all_of
+#' @importFrom tidyr unnest
+#' @importFrom plyr .
+#' @importFrom tibble tibble
+#' @importFrom tibble add_column
+#'
 #' @examples
 #' set.seed(123)
 #' df <- data.frame(u=rnorm(10), v=runif(10, 5,10))
