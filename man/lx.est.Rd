@@ -20,24 +20,24 @@ you should use \code{formula()} function}
 
 \item{lm.dt}{data.frame}
 
-\item{style}{character
+\item{style}{character.
 equation style on c("srf", "srm"),
 with default value style="srf"}
 
-\item{obs}{character
+\item{obs}{character.
 lower script for variables on c("i", "t"),
 with default value obs ="i"}
 
-\item{opt}{character
+\item{opt}{character.
 list of "soft" option on c("s", "t", "p"),
 with the default value opt=c("s", "t")}
 
-\item{digits}{integer
+\item{digits}{integer.
 list of digits specification on coef result,
 with the default value digits=c(2,4,2,4),
-respectively to c(""c,"s", "t", "p")}
+respectively to c("c","s", "t", "p")}
 
-\item{lm.label}{character
+\item{lm.label}{character.
 default value NULL}
 }
 \value{
@@ -53,8 +53,7 @@ require("wooldridge")
 mroz_new <- wooldridge::mroz \%>\%
   tibble::as_tibble() \%>\%
   dplyr::select(tidyselect::all_of(c("lwage", "educ", "exper", "fatheduc","motheduc")),
-    tidyselect::everything()) #\%>\%
-  #filter(!is.na(dplyr::vars("wage")))
+    tidyselect::everything())
 
 mod_origin <- formula(lwage ~ educ + nwifeinc + exper + I(exper^2) + I(exper^2*city))
 
