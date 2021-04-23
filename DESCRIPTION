@@ -28,3 +28,5 @@ Imports: magrittr,
          fs
 Depends: 
     R (>= 2.10)
+Suggests: 
+    testthat

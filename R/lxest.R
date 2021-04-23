@@ -155,14 +155,12 @@ lx.est<- function(lm.mod, lm.dt, style="srf",
   whole <- paste0(left,  body,  collapse = "" )
 
   out_lx <-c(
-    "$$\\begin{equation}",
-    str_c('\\begin{alignedat}{',999,"}"),
+    str_c('$$\\begin{alignedat}{',999,"}"),
     whole,
-    "\\end{alignedat}",
     # default no equation label
     if (!is.null(lm.label)) {
       paste0('(\\#eq:',lm.label,')')},
-    "\\end{equation}$$"
+    "\\end{alignedat}$$"
   )
 
   out <- paste0(out_lx, collapse = "\n")
