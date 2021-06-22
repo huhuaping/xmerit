@@ -8,8 +8,10 @@ lx.est(
   lm.mod,
   lm.dt,
   style = "srf",
+  lm.n = 3,
   obs = "i",
   opt = c("s", "t"),
+  inf = c(""),
   digits = c(2, 4, 2, 4),
   lm.label = NULL
 )
@@ -24,6 +26,10 @@ you should use \code{formula()} function}
 equation style on c("srf", "srm"),
 with default value style="srf"}
 
+\item{lm.n}{integer.
+numbers of independent vars of each row in the right equation.
+default value lm.n = 3}
+
 \item{obs}{character.
 lower script for variables on c("i", "t"),
 with default value obs ="i"}
@@ -31,6 +37,10 @@ with default value obs ="i"}
 \item{opt}{character.
 list of "soft" option on c("s", "t", "p"),
 with the default value opt=c("s", "t")}
+
+\item{inf}{character.
+list of "soft" option on c("over","fit","F"),
+with the default value opt=c("")}
 
 \item{digits}{integer.
 list of digits specification on coef result,
@@ -53,7 +63,8 @@ require("wooldridge")
 mroz_new <- wooldridge::mroz \%>\%
   tibble::as_tibble() \%>\%
   dplyr::select(tidyselect::all_of(c("lwage", "educ", "exper", "fatheduc","motheduc")),
-    tidyselect::everything())
+    tidyselect::everything()) \%>\%
+    dplyr::filter(!is.na(lwage))
 
 mod_origin <- formula(lwage ~ educ + nwifeinc + exper + I(exper^2) + I(exper^2*city))
 

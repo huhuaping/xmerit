@@ -12,6 +12,12 @@
 #' @param opt   character.
 #' list of "soft" option on c("s", "t", "p"),
 #' with the default value opt=c("s", "t")
+#' @param inf   character.
+#' list of "soft" option on c("over","fit","F"),
+#' with the default value opt=c("")
+#' @param lm.n integer.
+#' numbers of independent vars of each row in the right equation.
+#' default value lm.n = 3
 #' @param digits integer.
 #' list of digits specification on coef result,
 #' with the default value digits=c(2,4,2,4),
@@ -57,7 +63,8 @@
 #' mroz_new <- wooldridge::mroz %>%
 #'   tibble::as_tibble() %>%
 #'   dplyr::select(tidyselect::all_of(c("lwage", "educ", "exper", "fatheduc","motheduc")),
-#'     tidyselect::everything())
+#'     tidyselect::everything()) %>%
+#'     dplyr::filter(!is.na(lwage))
 #'
 #' mod_origin <- formula(lwage ~ educ + nwifeinc + exper + I(exper^2) + I(exper^2*city))
 #'
@@ -65,7 +72,11 @@
 #'
 #'
 lx.est<- function(lm.mod, lm.dt, style="srf",
-                  obs="i", opt=c("s", "t"), digits=c(2,4,2,4), lm.label =NULL){
+                  lm.n = 3,
+                  obs="i", opt=c("s", "t"),
+                  inf = c(""),
+                  digits=c(2,4,2,4),
+                  lm.label =NULL){
   ols.est <- lm(formula = lm.mod, data = lm.dt)
   result <- summary(ols.est)
 
@@ -77,8 +88,8 @@ lx.est<- function(lm.mod, lm.dt, style="srf",
     as_tibble() %>%
     rename("vx"="value") %>%
     mutate(vars = ifelse(str_detect(vx, "^I\\(|Intercept"),
-                          str_extract(vx, "(?<=\\()(.+)(?=\\))"),
-                          vx)) %>%
+                         str_extract(vx, "(?<=\\()(.+)(?=\\))"),
+                         vx)) %>%
     mutate(vars = str_replace(vars, "Intercept", "")) %>%
     mutate(vars = str_replace(vars, "log\\(","ln(")) %>%
     mutate(vars = str_replace_all(vars, " ", ""))
@@ -102,10 +113,59 @@ lx.est<- function(lm.mod, lm.dt, style="srf",
   df.sv<- map2_df(.x = df.sign, .y =  df.val, .f = paste0)
 
   # here we use the function get.block
-  df.cat <- get.block(dt = df.sv, n.row = 3)
+  df.cat <- get.block(dt = df.sv, n.row = lm.n)
   df.x <- bind_cols(x.trim, df.cat)
+
+  # information for model
+  n <- stats::nobs(ols.est)
+  sigma <- stats::sigma(ols.est)
+  R2 <-  result$r.squared
+  R2.adj <- result$adj.r.squared
+  F.val <- unname(result$fstatistic[1])
+  pf <- lm.pf(ols.est) # here use custom fun from lm.pf.R
+
+  val_inf <- c(n, sigma, R2, R2.adj, F.val, pf)
+  names_inf <- c("obs", "sigma.hat",
+                 "R2", "R2.adj",
+                 "F.star", "pf")
+  lx_inf <- c("n", "\\hat{\\sigma}",
+              "R^2", "\\bar{R}^2",
+              "F^*", "p")
+  type_inf <- rep(c("over", "fit", "Ftest"), each = 2)
+
+
+  df.inf <- tibble(type = type_inf,
+                   vx = names_inf, lx = lx_inf, value = val_inf) %>%
+    add_column(id = 1:nrow(.), .after = "type") %>%
+    # format num, use function num_round from utils.R
+    mutate(value = dplyr::if_else(vx %in% c("F.star"),
+                           num_round(value, 2),
+                           ifelse( vx %in% c("obs"), num_round(value, 0),
+                                   num_round(value))))
+
+  #inf <- c("over","goodness","Ftest")
+  start_b <- max(as.integer(df.cat$block)) +1
+  end_b <- start_b + length(inf) -1
+  body_inf <- df.inf %>%
+    dplyr::filter(type %in% inf) %>%
+    tidyr::unite(col = "lx.value", lx, value, sep = "=") %>%
+    dplyr::select(type, lx.value) %>%
+    mutate(type = factor(type, levels = inf)) %>%
+    group_by(type) %>%
+    dplyr::group_nest() %>%
+    mutate(lx.value=map(.x = data, .f =function(.x){paste0("&&",unlist(.x), collapse = "")} )) %>%
+    #mutate(lx.value = paste0("&&", lx.value)) %>%
+    dplyr::select(-data) %>%
+    dplyr::arrange(type) %>%
+    tibble::add_column(block = start_b:end_b, .after = "type") %>%
+    dplyr::rename(bx= "lx.value") %>%
+    mutate(block = as.factor(block),
+           type = as.character(type))
+
+
+
   # option for the style
-  left <- paste0(ifelse(style == "srf", "\\widehat{", "{"),
+  left <- paste0(ifelse(style == "srf", "&\\widehat{", "{"),
                  Y,"}")
 
   body_hard <- df.x %>%
@@ -127,13 +187,14 @@ lx.est<- function(lm.mod, lm.dt, style="srf",
     group_by(type, block) %>%
     group_nest() %>%
     mutate(bx=map(.x = data, .f =function(.x){paste0("&&",unlist(.x), collapse = "")} )) %>%
-    select(-data)
+    select(-data) %>%
+    mutate(bx = as.character(bx))
 
-  body_main <- rbind(body_hard, body_soft) %>%
+  body_main <- rbind(body_hard, body_soft, body_inf) %>%
     #make sure the order
-    mutate(type = factor(type, levels = c("h", opt))) %>%
+    mutate(type = factor(type, levels = c("h", opt, inf))) %>%
     arrange(block, type) %>%
-    mutate(bx = ifelse((type=="h"&block==1), paste0("&=", bx),
+    mutate(bx = ifelse((type=="h"&block==1), paste0("=", bx),
                        ifelse((type=="h"&block!=1), paste0("&(cont.)", bx),
                               ifelse(type!="h",paste0("&(", type,")", bx),
                                      bx)))) %>%
@@ -146,6 +207,7 @@ lx.est<- function(lm.mod, lm.dt, style="srf",
     group_nest() %>%
     mutate(bx=map(.x = data, .f =function(.x){paste0(unlist(.x), collapse = "\\\\")} )) %>%
     select(-data)
+
 
   body <- body_main %>%
     select(bx) %>%
