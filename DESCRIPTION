@@ -1,5 +1,5 @@
 Package: xmerit
-Title: What the Package Does (One Line, Title Case)
+Title: Easy For Statistic And Econometrics Teaching
 Version: 0.0.11
 Authors@R: 
     person(given = "huaping",
@@ -7,7 +7,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "huhuaping01@hotmail.com",
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+Description: Easy to show latex symbols and equations.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
