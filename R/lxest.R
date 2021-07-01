@@ -108,7 +108,7 @@ lx.est<- function(lm.mod, lm.dt, style="srf",
 
   # here we use the function absColumns
   df.val <- df %>%
-    abs.col(digits= digits)
+    absCol(digits= digits)
 
   df.sv<- map2_df(.x = df.sign, .y =  df.val, .f = paste0)
 

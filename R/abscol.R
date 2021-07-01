@@ -4,15 +4,15 @@
 #' @param digits list
 #'
 #' @return out
-#' @export abs.col
+#' @export absCol
 #'
 #' @examples
 #' set.seed(123)
 #' df <- data.frame(u=rnorm(10), v=runif(10, 5,10))
-#' out <- abs.col(df, c(4,2))
+#' out <- absCol(df, c(4,2))
 #'
 #'
-abs.col <-  function(x, digits){
+absCol <-  function(x, digits){
   x <- as.data.frame(x)
   nms <- names(x)
   nc <- ncol(x)
