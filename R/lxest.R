@@ -13,7 +13,7 @@
 #' list of "soft" option on c("s", "t", "p"),
 #' with the default value opt=c("s", "t")
 #' @param inf   character.
-#' list of "soft" option on c("over","fit","F"),
+#' list of "soft" option on c("over","fit","Ftest"),
 #' with the default value opt=c("")
 #' @param lm.n integer.
 #' numbers of independent vars of each row in the right equation.
@@ -186,7 +186,7 @@ lx.est<- function(lm.mod, lm.dt, style="srf",
     gather(key = "type", value = "vale", all_of(opt)) %>%
     group_by(type, block) %>%
     group_nest() %>%
-    mutate(bx=map(.x = data, .f =function(.x){paste0("&&",unlist(.x), collapse = "")} )) %>%
+    mutate(bx=map(.x = data, .f =function(.x){paste0("&&(",unlist(.x),")", collapse = "")} )) %>%
     select(-data) %>%
     mutate(bx = as.character(bx))
 

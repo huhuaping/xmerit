@@ -39,7 +39,7 @@ list of "soft" option on c("s", "t", "p"),
 with the default value opt=c("s", "t")}
 
 \item{inf}{character.
-list of "soft" option on c("over","fit","F"),
+list of "soft" option on c("over","fit","Ftest"),
 with the default value opt=c("")}
 
 \item{digits}{integer.

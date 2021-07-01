@@ -20,6 +20,7 @@ format columns with absolute value and custom digits
 \examples{
 set.seed(123)
 df <- data.frame(u=rnorm(10), v=runif(10, 5,10))
-#out <- abs.col(df, c(4,2))
+out <- abs.col(df, c(4,2))
+
 
 }

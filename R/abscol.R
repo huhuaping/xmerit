@@ -4,12 +4,13 @@
 #' @param digits list
 #'
 #' @return out
-#'
+#' @export abs.col
 #'
 #' @examples
 #' set.seed(123)
 #' df <- data.frame(u=rnorm(10), v=runif(10, 5,10))
-#' #out <- abs.col(df, c(4,2))
+#' out <- abs.col(df, c(4,2))
+#'
 #'
 abs.col <-  function(x, digits){
   x <- as.data.frame(x)
@@ -20,7 +21,8 @@ abs.col <-  function(x, digits){
     stop("Argument 'digits' must be vector of length  the number of columns in 'data'.")
   out <- as.data.frame(sapply(1:nc,
                               FUN=function(y, d, Z)
-                                formatC(base::abs(Z[,y]), digits=d[y], format = "f"), Z=x, d=digits))
+                                formatC(abs(Z[,y]), digits=d[y], format = "f"), Z=x, d=digits))
   if(!is.null(nms)) names(out) <- nms
-  out
+  out <- tibble::as_tibble(out)
+  return(out)
 }
