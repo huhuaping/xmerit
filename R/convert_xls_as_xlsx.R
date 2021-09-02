@@ -23,11 +23,11 @@ get_excelcnv_exe <- function(office_folder = safe_office_folder()) {
     cat(paste0(
       "\nFound ", n, " versions of 'excelcnv.exe':\n  ",
       kwb.utils::collapsed(paths, "\n  "),
-      "\n\nUsing the latest one:\n  ", paths[2], "\n\n"
+      "\n\nUsing the latest one:\n  ", paths[1], "\n\n"
     ))
   }
 
-  paths[2]
+  paths[1]
 }
 
 #' Helper function: safe_office_folder
@@ -47,11 +47,12 @@ safe_office_folder <- function(
 #' @param dbg debug (default: TRUE)
 #' @importFrom kwb.utils catIf
 #'
+#'
 delete_registry <- function(office_folder = safe_office_folder(), dbg = TRUE) {
   exe_path <- get_excelcnv_exe(office_folder)
 
   parent_folder <- basename(dirname(exe_path))
-
+  # no need to do this for now
   # Delete registry entry:
   # http://justgeeks.blogspot.com/2014/08/
   # free-convert-for-excel-files-xls-to-xlsx.html
@@ -59,7 +60,7 @@ delete_registry <- function(office_folder = safe_office_folder(), dbg = TRUE) {
   # "C:\Program Files\Microsoft Office\root\Office16\excelcnv.exe" -oice "C:\temp\MyFile.xls" "C:\temp\MyFile.xlsx"
 
   patterns <- kwb.utils::resolve(list(
-    office = "HKEY_CURRENT_USER\\Software\\Microsoft\\Office\\root",
+    office = "HKEY_CURRENT_USER\\Software\\Microsoft\\Office\\",
     reg_entry = "<office>\\<version>.0\\Excel\\Resiliency\\StartupItems",
     command = "reg delete <reg_entry> /f",
     debug = "\nDeleting registry entry:\n<command>\n",
@@ -72,13 +73,22 @@ delete_registry <- function(office_folder = safe_office_folder(), dbg = TRUE) {
 }
 
 
-#' Convert xls to xlsx
+#' Batch Convert xls to xlsx
+#'
+#' You can see \url{https://github.com/KWB-R/kwb.geosalz/blob/master/R/convert_xls_as_xlsx.R}
+#'
 #' @param input_dir input directory containing .xls files
 #' @param export_dir export directory (default: tempdir())
 #' @param office_folder office folder path (default: \code{safe_office_folder})
 #' @param dbg debug (default: TRUE)
 #' @importFrom  fs dir_create
-#' @export
+#' @export convert_xls_as_xlsx
+#'
+#' @examples
+#' \dontrun{
+#' convert_xls_as_xlsx(input_dir = "d:/issue-xls/",
+#'   export_dir = "d:/my-xlsx/")
+#' }
 #'
 convert_xls_as_xlsx <- function(input_dir,
                                 export_dir = tempdir(),

@@ -2,7 +2,7 @@
 % Please edit documentation in R/convert_xls_as_xlsx.R
 \name{convert_xls_as_xlsx}
 \alias{convert_xls_as_xlsx}
-\title{Convert xls to xlsx}
+\title{Batch Convert xls to xlsx}
 \usage{
 convert_xls_as_xlsx(
   input_dir,
@@ -21,5 +21,12 @@ convert_xls_as_xlsx(
 \item{dbg}{debug (default: TRUE)}
 }
 \description{
-Convert xls to xlsx
+You can see \url{https://github.com/KWB-R/kwb.geosalz/blob/master/R/convert_xls_as_xlsx.R}
+}
+\examples{
+\dontrun{
+convert_xls_as_xlsx(input_dir = "d:/issue-xls/",
+  export_dir = "d:/my-xlsx/")
+}
+
 }
