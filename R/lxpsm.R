@@ -1,15 +1,23 @@
 #' Write latex math equation of econometrics text for rmarkdown file
 #'
 #'
-#' @param x character
-#' @param y character
-#' @param intercept logical
-#' @param greek.g character
-#' @param greek.n integer
-#' @param type    character
-#' @param lm.label character
-#' @param obs character
-#' @param n.row integer
+#' @param x character. Vector of all independent variables.
+#' @param y character. The dependent variables.
+#' @param intercept logical. Model intercept, with default value: TRUE.
+#' @param greek.g character. Specify parameters' Greek symbols,
+#'     with default value: greek.g = c("beta").
+#' @param greek.n integer. Specify the number respect to  "greek.g" vector,
+#'     and the default value is: "greek.n = length(x)+1".
+#' @param type    character. Types of model, with options
+#'     type=c("prm","prf","srf","srm").
+#' @param lm.label character.
+#' @param obs character. options for subscript, with options "obs = c('i', 't')",
+#'     and the default value is : obs = 'i'.
+#' @param n.row integer. Numbers of variables in each row, default value 2
+#' @param no_dollar Logistic value. The equation environment
+#' should contains double dollars,  with default value "no_dollar = FALSE"
+#'
+#'
 #' @importFrom magrittr %>%
 #' @import tidyverse
 #' @return out
@@ -22,7 +30,7 @@
 #' Greek.n <- c(4,4,2)
 #' Obs <- "i"
 #' N.row <- 5
-#' Cst <- FALSE
+#' Cst <- T
 #'
 #' out <- lx.psm(x =X, y = Y,greek.g = Greek.g, greek.n = Greek.n,
 #'   type = "prm", intercept = Cst , lm.label = "prm",
@@ -32,8 +40,9 @@
 
 
 lx.psm <- function(x, y = "Y", intercept = TRUE,
-                   greek.g = c("beta"), greek.n,
-                   type = "prm", lm.label=NULL, obs ="i", n.row){
+                   greek.g = c("beta"), greek.n = length(x)+1,
+                   type = "prm", lm.label=NULL, obs ="i",
+                   n.row=2, no_dollar = FALSE){
 
   par_index <- lapply(greek.n, FUN = function(x) 1:x)  %>%
     unlist()
@@ -90,10 +99,10 @@ lx.psm <- function(x, y = "Y", intercept = TRUE,
 
     range <- breaks[i]:(breaks[i+1]-1)
 
-    right_tem <- paste0("&&",par[range], x.trim[range], collapse = "+" )
+    right_tem <- paste0("&&+",par[range], x.trim[range], collapse = "" )
 
     right_loop <- paste0(right_loop,
-                         ifelse(!is.null(right_loop),"\\\\&+", ""),
+                         ifelse(!is.null(right_loop),"\\\\& \\quad", ""),
                          right_tem)
   }
 
@@ -101,7 +110,7 @@ lx.psm <- function(x, y = "Y", intercept = TRUE,
   body_px <- right_loop
 
   if(!is.na(tail)){
-    right <- paste0(body_px, "+&&",tail)
+    right <- paste0(body_px, "&&+",tail)
   }  else {
     right <- body_px
   }
@@ -113,14 +122,18 @@ lx.psm <- function(x, y = "Y", intercept = TRUE,
                   "&=", right,  collapse = "" )
 
   out_lx <-c(
-    "$$\\begin{equation}",
+    ifelse(no_dollar,
+           "\\begin{equation}",
+           "$$\\begin{equation}"),
     paste0('\\begin{alignedat}{',999,"}"),
     whole,
     "\\end{alignedat}",
     # default no equation label
     if (!is.null(lm.label)) {
       paste0('(\\#eq:',lm.label,')')},
-    "\\end{equation}$$"
+    ifelse(no_dollar,
+           "\\end{equation}",
+           "\\end{equation}$$")
   )
 
   out <- paste0(out_lx, collapse = "\n")

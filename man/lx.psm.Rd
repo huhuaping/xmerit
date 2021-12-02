@@ -9,31 +9,39 @@ lx.psm(
   y = "Y",
   intercept = TRUE,
   greek.g = c("beta"),
-  greek.n,
+  greek.n = length(x) + 1,
   type = "prm",
   lm.label = NULL,
   obs = "i",
-  n.row
+  n.row = 2,
+  no_dollar = FALSE
 )
 }
 \arguments{
-\item{x}{character}
+\item{x}{character. Vector of all independent variables.}
 
-\item{y}{character}
+\item{y}{character. The dependent variables.}
 
-\item{intercept}{logical}
+\item{intercept}{logical. Model intercept, with default value: TRUE.}
 
-\item{greek.g}{character}
+\item{greek.g}{character. Specify parameters' Greek symbols,
+with default value: greek.g = c("beta").}
 
-\item{greek.n}{integer}
+\item{greek.n}{integer. Specify the number respect to  "greek.g" vector,
+and the default value is: "greek.n = length(x)+1".}
 
-\item{type}{character}
+\item{type}{character. Types of model, with options
+type=c("prm","prf","srf","srm").}
 
-\item{lm.label}{character}
+\item{lm.label}{character.}
 
-\item{obs}{character}
+\item{obs}{character. options for subscript, with options "obs = c('i', 't')",
+and the default value is : obs = 'i'.}
 
-\item{n.row}{integer}
+\item{n.row}{integer. Numbers of variables in each row, default value 2}
+
+\item{no_dollar}{Logistic value. The equation environment
+should contains double dollars,  with default value "no_dollar = FALSE"}
 }
 \value{
 out
@@ -49,7 +57,7 @@ Greek.n <- c(4,4,2)
 Greek.n <- c(4,4,2)
 Obs <- "i"
 N.row <- 5
-Cst <- FALSE
+Cst <- T
 
 out <- lx.psm(x =X, y = Y,greek.g = Greek.g, greek.n = Greek.n,
   type = "prm", intercept = Cst , lm.label = "prm",
