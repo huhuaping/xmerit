@@ -30,10 +30,11 @@
 #' Greek.n <- c(4,4,2)
 #' Obs <- "i"
 #' N.row <- 5
-#' Cst <- T
+#' Cst <- TRUE
 #'
-#' out <- lx.psm(x =X, y = Y,greek.g = Greek.g, greek.n = Greek.n,
-#'   type = "prm", intercept = Cst , lm.label = "prm",
+#' out <- lx.psm(x =X, y = Y,
+#'   greek.g = Greek.g, greek.n = Greek.n,
+#'   type = "prm", intercept = Cst, lm.label = "prm",
 #'   obs = Obs, n.row = N.row )
 #'
 

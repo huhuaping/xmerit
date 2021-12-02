@@ -71,7 +71,9 @@
 #'
 #' lx_out <- lx.est(lm.mod = mod_origin, lm.dt = mroz_new)
 #'
-#' lx_out2 <- lx.est(lm.mod = mod_origin, lm.dt = mroz_new,style = c('srm'),inf = c('over','fit','Ftest'), lm.label = 'test-srm')
+#' lx_out2 <- lx.est(lm.mod = mod_origin, lm.dt = mroz_new,
+#'   style = c('srm'),inf = c('over','fit','Ftest'),
+#'   lm.label = 'test-srm')
 #'
 lx.est<- function(lm.mod, lm.dt, style="srf",
                   lm.n = 3,
