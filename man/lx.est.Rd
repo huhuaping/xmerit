@@ -13,11 +13,12 @@ lx.est(
   opt = c("s", "t"),
   inf = c(""),
   digits = c(2, 4, 2, 4),
-  lm.label = NULL
+  lm.label = NULL,
+  no_dollar = FALSE
 )
 }
 \arguments{
-\item{lm.mod}{character
+\item{lm.mod}{character.
 you should use \code{formula()} function}
 
 \item{lm.dt}{data.frame}
@@ -49,6 +50,9 @@ respectively to c("c","s", "t", "p")}
 
 \item{lm.label}{character.
 default value NULL}
+
+\item{no_dollar}{Logistic value. The equation environment
+should contains double dollars,  with default value "no_dollar = FALSE"}
 }
 \value{
 out
@@ -70,5 +74,6 @@ mod_origin <- formula(lwage ~ educ + nwifeinc + exper + I(exper^2) + I(exper^2*c
 
 lx_out <- lx.est(lm.mod = mod_origin, lm.dt = mroz_new)
 
+lx_out2 <- lx.est(lm.mod = mod_origin, lm.dt = mroz_new,style = c('srm'),inf = c('over','fit','Ftest'), lm.label = 'test-srm')
 
 }

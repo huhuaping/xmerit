@@ -1,6 +1,6 @@
 #' Write latex math equation of lm estimation for rmarkdown file
 #'
-#' @param lm.mod character
+#' @param lm.mod character.
 #' you should use `formula()` function
 #' @param lm.dt data.frame
 #' @param style character.
@@ -24,7 +24,8 @@
 #' respectively to c("c","s", "t", "p")
 #' @param lm.label character.
 #' default value NULL
-#'
+#' @param no_dollar Logistic value. The equation environment
+#' should contains double dollars,  with default value "no_dollar = FALSE"
 #'
 #' @return out
 #' @export lx.est
@@ -70,13 +71,15 @@
 #'
 #' lx_out <- lx.est(lm.mod = mod_origin, lm.dt = mroz_new)
 #'
+#' lx_out2 <- lx.est(lm.mod = mod_origin, lm.dt = mroz_new,style = c('srm'),inf = c('over','fit','Ftest'), lm.label = 'test-srm')
 #'
 lx.est<- function(lm.mod, lm.dt, style="srf",
                   lm.n = 3,
                   obs="i", opt=c("s", "t"),
                   inf = c(""),
                   digits=c(2,4,2,4),
-                  lm.label =NULL){
+                  lm.label =NULL,
+                  no_dollar = FALSE){
   ols.est <- lm(formula = lm.mod, data = lm.dt)
   result <- summary(ols.est)
 
@@ -165,8 +168,11 @@ lx.est<- function(lm.mod, lm.dt, style="srf",
 
 
   # option for the style
-  left <- paste0(ifelse(style == "srf", "&\\widehat{", "{"),
-                 Y,"}")
+  left <- paste0(
+    ifelse(style == "srf",
+           "&\\widehat{",
+           "&{"),
+    Y,"}")
 
   body_hard <- df.x %>%
     mutate(vars= ifelse(vx!="(Intercept)",
@@ -199,8 +205,10 @@ lx.est<- function(lm.mod, lm.dt, style="srf",
                               ifelse(type!="h",paste0("&(", type,")", bx),
                                      bx)))) %>%
     # option for style
-    mutate(bx = ifelse(style=="srm"&type=="h"&block==max(as.numeric(.$block)),
-                       paste0(bx, "&&+e_", obs), bx)) %>%
+    mutate(bx = ifelse((style%in%"srm")&(dplyr::row_number() %in% max(which(.$type=='h'))),
+                       paste0(bx, "&&+e_", obs),
+                       paste0(bx, "&&"))
+           ) %>%
     select(-type) %>%
     # collapse with map
     group_by(block) %>%
@@ -217,12 +225,19 @@ lx.est<- function(lm.mod, lm.dt, style="srf",
   whole <- paste0(left,  body,  collapse = "" )
 
   out_lx <-c(
-    str_c('$$\\begin{alignedat}{',999,"}"),
+    ifelse(no_dollar,
+           "\\begin{equation}",
+           "$$\\begin{equation}"),
+    str_c('\\begin{alignedat}{',999,"}"),
     whole,
+    "\\end{alignedat}",
     # default no equation label
     if (!is.null(lm.label)) {
       paste0('(\\#eq:',lm.label,')')},
-    "\\end{alignedat}$$"
+    ifelse(no_dollar,
+           "\\end{equation}",
+           "\\end{equation}$$")
+
   )
 
   out <- paste0(out_lx, collapse = "\n")
