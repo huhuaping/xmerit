@@ -751,15 +751,16 @@
     },
     "tinytex": {
       "Package": "tinytex",
-      "Version": "0.31.6",
+      "Version": "0.35.3",
       "Source": "GitHub",
+      "Remotes": "yihui/xfun",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
       "RemoteRepo": "tinytex",
       "RemoteUsername": "yihui",
       "RemoteRef": "HEAD",
-      "RemoteSha": "4c262cbc4c52bb3c1fe892cf2448910dfbfb2d39",
-      "Hash": "60ce2f3464125cde03e5e2e925e701c9"
+      "RemoteSha": "5dec9cbccc9a9c4c4fe9152b8219bd3b45c516fb",
+      "Hash": "a3d3658c0035352ee05d3138a6a5a586"
     },
     "tzdb": {
       "Package": "tzdb",
@@ -833,10 +834,15 @@
     },
     "xfun": {
       "Package": "xfun",
-      "Version": "0.28",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "f7f3a61ab62cd046d307577a8ae12999"
+      "Version": "0.28.7",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "xfun",
+      "RemoteUsername": "yihui",
+      "RemoteRef": "HEAD",
+      "RemoteSha": "657707c76fb2893951129ae6d2b8f8e6c14806d9",
+      "Hash": "ebda9689ac1c2308a134c6722af78037"
     },
     "xml2": {
       "Package": "xml2",
