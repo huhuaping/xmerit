@@ -12,6 +12,7 @@ lx.psm(
   greek.n = length(x) + 1,
   type = "prm",
   lm.label = NULL,
+  lm.tag = NULL,
   obs = "i",
   n.row = 2,
   no_dollar = FALSE
@@ -33,7 +34,9 @@ and the default value is: "greek.n = length(x)+1".}
 \item{type}{character. Types of model, with options
 type=c("prm","prf","srf","srm").}
 
-\item{lm.label}{character.}
+\item{lm.label}{character. Options for equation label, default value "NULL".}
+
+\item{lm.tag}{character. Options for equation tag, default value "NULL".}
 
 \item{obs}{character. options for subscript, with options "obs = c('i', 't')",
 and the default value is : obs = 'i'.}

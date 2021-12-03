@@ -14,6 +14,7 @@ lx.est(
   inf = c(""),
   digits = c(2, 4, 2, 4),
   lm.label = NULL,
+  lm.tag = NULL,
   no_dollar = FALSE
 )
 }
@@ -48,8 +49,11 @@ list of digits specification on coef result,
 with the default value digits=c(2,4,2,4),
 respectively to c("c","s", "t", "p")}
 
-\item{lm.label}{character.
+\item{lm.label}{character. Options for equation label,
 default value NULL}
+
+\item{lm.tag}{character. Options for equation tag,
+default value "NULL".}
 
 \item{no_dollar}{Logistic value. The equation environment
 should contains double dollars,  with default value "no_dollar = FALSE"}

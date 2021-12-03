@@ -10,7 +10,8 @@
 #'     and the default value is: "greek.n = length(x)+1".
 #' @param type    character. Types of model, with options
 #'     type=c("prm","prf","srf","srm").
-#' @param lm.label character.
+#' @param lm.label character. Options for equation label, default value "NULL".
+#' @param lm.tag character. Options for equation tag, default value "NULL".
 #' @param obs character. options for subscript, with options "obs = c('i', 't')",
 #'     and the default value is : obs = 'i'.
 #' @param n.row integer. Numbers of variables in each row, default value 2
@@ -42,8 +43,9 @@
 
 lx.psm <- function(x, y = "Y", intercept = TRUE,
                    greek.g = c("beta"), greek.n = length(x)+1,
-                   type = "prm", lm.label=NULL, obs ="i",
-                   n.row=2, no_dollar = FALSE){
+                   type = "prm", lm.label=NULL, lm.tag = NULL,
+                   obs ="i",n.row=2,
+                   no_dollar = FALSE){
 
   par_index <- lapply(greek.n, FUN = function(x) 1:x)  %>%
     unlist()
@@ -100,18 +102,18 @@ lx.psm <- function(x, y = "Y", intercept = TRUE,
 
     range <- breaks[i]:(breaks[i+1]-1)
 
-    right_tem <- paste0("&&+",par[range], x.trim[range], collapse = "" )
+    right_tem <- paste0("+",par[range], x.trim[range], collapse = "" )
 
     right_loop <- paste0(right_loop,
-                         ifelse(!is.null(right_loop),"\\\\& \\quad", ""),
+                         ifelse(!is.null(right_loop),"\\\\&", ""),
                          right_tem)
   }
 
 
-  body_px <- right_loop
+  body_px <- paste0("&",right_loop)
 
   if(!is.na(tail)){
-    right <- paste0(body_px, "&&+",tail)
+    right <- paste0(body_px, "+",tail)
   }  else {
     right <- body_px
   }
@@ -120,21 +122,24 @@ lx.psm <- function(x, y = "Y", intercept = TRUE,
   whole <- paste0(left,
                   ifelse(type=="prf","",
                           paste0("_",obs)),
-                  "&=", right,  collapse = "" )
+                  "=", right,  collapse = "" )
 
-  out_lx <-c(
+  out_lx <- c(
     ifelse(no_dollar,
-           "\\begin{equation}",
-           "$$\\begin{equation}"),
-    paste0('\\begin{alignedat}{',999,"}"),
+           "\\begin{align}",
+           "$$\\begin{align}"),
+    paste0("\\begin{split}"),
     whole,
-    "\\end{alignedat}",
+    "\\end{split}",
+    # default no equation tag
+    if (!is.null(lm.tag)) {
+      paste0('\\quad \\text{(',lm.tag,')}\\quad')},
     # default no equation label
     if (!is.null(lm.label)) {
       paste0('(\\#eq:',lm.label,')')},
     ifelse(no_dollar,
-           "\\end{equation}",
-           "\\end{equation}$$")
+           "\\end{align}",
+           "\\end{align}$$")
   )
 
   out <- paste0(out_lx, collapse = "\n")

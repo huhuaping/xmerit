@@ -22,8 +22,10 @@
 #' list of digits specification on coef result,
 #' with the default value digits=c(2,4,2,4),
 #' respectively to c("c","s", "t", "p")
-#' @param lm.label character.
-#' default value NULL
+#' @param lm.label character. Options for equation label,
+#'     default value NULL
+#' @param lm.tag character. Options for equation tag,
+#'     default value "NULL".
 #' @param no_dollar Logistic value. The equation environment
 #' should contains double dollars,  with default value "no_dollar = FALSE"
 #'
@@ -80,7 +82,7 @@ lx.est<- function(lm.mod, lm.dt, style="srf",
                   obs="i", opt=c("s", "t"),
                   inf = c(""),
                   digits=c(2,4,2,4),
-                  lm.label =NULL,
+                  lm.label =NULL, lm.tag = NULL,
                   no_dollar = FALSE){
   ols.est <- lm(formula = lm.mod, data = lm.dt)
   result <- summary(ols.est)
@@ -233,6 +235,9 @@ lx.est<- function(lm.mod, lm.dt, style="srf",
     str_c('\\begin{alignedat}{',999,"}"),
     whole,
     "\\end{alignedat}",
+    # default no equation tag
+    if (!is.null(lm.tag)) {
+      paste0('\\quad \\text{(',lm.tag,')}\\quad')},
     # default no equation label
     if (!is.null(lm.label)) {
       paste0('(\\#eq:',lm.label,')')},
