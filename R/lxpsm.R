@@ -4,6 +4,8 @@
 #' @param x character. Vector of all independent variables.
 #' @param y character. The dependent variables.
 #' @param intercept logical. Model intercept, with default value: TRUE.
+#' @param  begin numeric. Index number (0 or 1) to set the subscript of the first
+#'   greek symbols, with default value: begin =1.
 #' @param greek.g character. Specify parameters' Greek symbols,
 #'     with default value: greek.g = c("beta").
 #' @param greek.n integer. Specify the number respect to  "greek.g" vector,
@@ -33,7 +35,7 @@
 #' N.row <- 5
 #' Cst <- TRUE
 #'
-#' out <- lx.psm(x =X, y = Y,
+#' out <- lx.psm(x =X, y = Y, begin =1,
 #'   greek.g = Greek.g, greek.n = Greek.n,
 #'   type = "prm", intercept = Cst, lm.label = "prm",
 #'   obs = Obs, n.row = N.row )
@@ -41,27 +43,47 @@
 
 
 
-lx.psm <- function(x, y = "Y", intercept = TRUE,
+lx.psm <- function(x, y = "Y",
+                   intercept = TRUE, begin =1,
                    greek.g = c("beta"), greek.n = length(x)+1,
                    type = "prm", lm.label=NULL, lm.tag = NULL,
                    obs ="i",n.row=2,
                    no_dollar = FALSE){
 
-  par_index <- lapply(greek.n, FUN = function(x) 1:x)  %>%
-    unlist()
-
-  greek.n.tem <-  greek.n
-  if (isTRUE(intercept)){
-    par_index <- c(0, par_index)
-    greek.n.tem[1] <- greek.n[1] +1
-    x <- c("", x)
+  # set start point and end point
+  if (begin ==0) {
+    p_start <- 0
+    if (intercept==FALSE){
+      p_end <- greek.n[1]-1
+    } else if(intercept==TRUE){
+      p_end <- greek.n[1]
+      x <- c("", x)
+    }
   } else {
-    par_index <- c( par_index)
-    greek.n.tem <- greek.n
+    p_start <- 1
+    if (intercept==FALSE){
+      p_end <- greek.n[1]
+    } else if(intercept==TRUE){
+      p_end <- greek.n[1] +1
+      x <- c("", x)
+    }
   }
 
-  par_list <- rep(greek.g, times= greek.n.tem)
 
+  # calculate all cases
+  df_n <- tibble(n=greek.n,
+                 part =paste0("P",1:length(greek.n))) %>%
+   mutate(start = ifelse(part %in%c("P1"),
+                          p_start, 1),
+           end = ifelse(part %in%c("P1"),
+                        p_end, n)) %>%
+    mutate(n_total = end-start +1) %>%
+    mutate(index =purrr::map2(.x = start,
+                       .y =end,
+                       .f = function(x, y)seq(x,y)) )
+  # get list of index and greek symbols
+  par_index <- unlist(df_n$index)
+  par_list <- rep(greek.g, times= df_n$n_total)
 
 
   left <- y

@@ -8,6 +8,7 @@ lx.psm(
   x,
   y = "Y",
   intercept = TRUE,
+  begin = 1,
   greek.g = c("beta"),
   greek.n = length(x) + 1,
   type = "prm",
@@ -24,6 +25,9 @@ lx.psm(
 \item{y}{character. The dependent variables.}
 
 \item{intercept}{logical. Model intercept, with default value: TRUE.}
+
+\item{begin}{numeric. Index number (0 or 1) to set the subscript of the first
+greek symbols, with default value: begin =1.}
 
 \item{greek.g}{character. Specify parameters' Greek symbols,
 with default value: greek.g = c("beta").}
@@ -62,7 +66,7 @@ Obs <- "i"
 N.row <- 5
 Cst <- TRUE
 
-out <- lx.psm(x =X, y = Y,
+out <- lx.psm(x =X, y = Y, begin =1,
   greek.g = Greek.g, greek.n = Greek.n,
   type = "prm", intercept = Cst, lm.label = "prm",
   obs = Obs, n.row = N.row )

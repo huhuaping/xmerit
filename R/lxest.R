@@ -210,7 +210,7 @@ lx.est<- function(lm.mod, lm.dt, style="srf",
                                      bx)))) %>%
     # option for style
     mutate(bx = ifelse((style%in%"srm")&(dplyr::row_number() %in% max(which(.$type=='h'))),
-                       paste0(bx, "\\quad+e_", obs),
+                       paste0(bx, "&&+e_", obs),
                        paste0(bx, "&&"))
            ) %>%
     select(-type) %>%
