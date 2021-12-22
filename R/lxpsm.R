@@ -69,6 +69,8 @@ lx.psm <- function(x, y = "Y",
     }
   }
 
+  x<- stringr::str_replace_all(x, "\\_", "\\\\_")
+
 
   # calculate all cases
   df_n <- tibble(n=greek.n,
@@ -86,7 +88,7 @@ lx.psm <- function(x, y = "Y",
   par_list <- rep(greek.g, times= df_n$n_total)
 
 
-  left <- y
+  left <- stringr::str_replace(y,"\\_","\\\\_")
   tail <- paste0("u_", obs)
   par <-  paste0("\\",par_list,"_{", par_index, "}")
 

@@ -121,7 +121,8 @@ lx.est<- function(lm.mod, lm.dt, style="srf",
 
   # here we use the function get.block
   df.cat <- get.block(dt = df.sv, n.row = lm.n)
-  df.x <- bind_cols(x.trim, df.cat)
+  df.x <- bind_cols(x.trim, df.cat) %>%
+    mutate(vars=stringr::str_replace(vars,"\\_","\\\\_"))
 
   # information for model
   n <- stats::nobs(ols.est)
@@ -176,7 +177,8 @@ lx.est<- function(lm.mod, lm.dt, style="srf",
     ifelse(style == "srf",
            "&\\widehat{",
            "&{"),
-    Y,"}")
+    stringr::str_replace(Y,"\\_","\\\\_"),
+    "}")
 
   body_hard <- df.x %>%
     mutate(vars= ifelse(vx!="(Intercept)",
