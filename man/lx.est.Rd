@@ -72,9 +72,10 @@ mroz_new <- wooldridge::mroz \%>\%
   tibble::as_tibble() \%>\%
   dplyr::select(tidyselect::all_of(c("lwage", "educ", "exper", "fatheduc","motheduc")),
     tidyselect::everything()) \%>\%
-    dplyr::filter(!is.na(lwage))
+    dplyr::filter(!is.na(lwage)) \%>\%
+    dplyr::rename('educ_p_q'='educ')
 
-mod_origin <- formula(lwage ~ educ + nwifeinc + exper + I(exper^2) + I(exper^2*city))
+mod_origin <- formula(lwage ~ educ_p_q + nwifeinc + exper + I(exper^2) + I(exper^2*city))
 
 lx_out <- lx.est(lm.mod = mod_origin, lm.dt = mroz_new)
 

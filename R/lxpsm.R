@@ -88,7 +88,7 @@ lx.psm <- function(x, y = "Y",
   par_list <- rep(greek.g, times= df_n$n_total)
 
 
-  left <- stringr::str_replace(y,"\\_","\\\\_")
+  left <- stringr::str_replace_all(y,"\\_","\\\\_")
   tail <- paste0("u_", obs)
   par <-  paste0("\\",par_list,"_{", par_index, "}")
 
