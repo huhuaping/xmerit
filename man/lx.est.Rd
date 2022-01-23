@@ -80,7 +80,7 @@ mod_origin <- formula(lwage ~ educ_p_q + nwifeinc + exper + I(exper^2) + I(exper
 lx_out <- lx.est(lm.mod = mod_origin, lm.dt = mroz_new)
 
 lx_out2 <- lx.est(lm.mod = mod_origin, lm.dt = mroz_new,
-  style = c('srm'),inf = c('over','fit','Ftest'),
+  style = c('srf'),inf = c('over','fit','Ftest'),
   lm.label = 'test-srm')
 
 }

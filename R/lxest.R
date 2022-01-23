@@ -48,6 +48,7 @@
 #' @importFrom dplyr vars
 #' @importFrom tidyr unite
 #' @importFrom tidyr gather
+#' @importFrom stringr str_count
 #' @importFrom stringr str_detect
 #' @importFrom stringr str_extract
 #' @importFrom stringr str_replace
