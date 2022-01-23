@@ -75,7 +75,7 @@
 #' lx_out <- lx.est(lm.mod = mod_origin, lm.dt = mroz_new)
 #'
 #' lx_out2 <- lx.est(lm.mod = mod_origin, lm.dt = mroz_new,
-#'   style = c('srm'),inf = c('over','fit','Ftest'),
+#'   style = c('srf'),inf = c('over','fit','Ftest'),
 #'   lm.label = 'test-srm')
 #'
 lx.est<- function(lm.mod, lm.dt, style="srf",
@@ -213,21 +213,26 @@ lx.est<- function(lm.mod, lm.dt, style="srf",
                                      bx)))) %>%
     # option for style
     mutate(bx = ifelse((style%in%"srm")&(dplyr::row_number() %in% max(which(.$type=='h'))),
-                       paste0(bx, "&&+e_", obs),
-                       paste0(bx, "&&"))
-           ) %>%
-    select(-type) %>%
+                       paste0(bx, " &&+e_", obs),
+                       bx)) %>%
+    # full length of &&
+    mutate(n = stringr::str_count(bx, "&&"),
+           n_max = max(n),
+           dif = n_max -n,
+           and = purrr::map(dif,function(x) paste0(rep(" &&",x), collapse=""))) %>%
+    mutate(bx = stringr::str_c(bx, and)) %>%
+    select(block, bx) %>%
     # collapse with map
     group_by(block) %>%
     group_nest() %>%
-    mutate(bx=map(.x = data, .f =function(.x){paste0(unlist(.x), collapse = "\\\\")} )) %>%
+    mutate(bx=map(.x = data, .f =function(.x){paste0(unlist(.x), collapse = "\\\\ \n")} )) %>%
     select(-data)
 
 
   body <- body_main %>%
     select(bx) %>%
     unlist() %>%
-    paste0( collapse = "\\\\")
+    paste0( collapse = "\\\\ \n")
 
   whole <- paste0(left,  body,  collapse = "" )
 
@@ -250,7 +255,7 @@ lx.est<- function(lm.mod, lm.dt, style="srf",
 
   )
 
-  out <- paste0(out_lx, collapse = "\n")
+  out <-paste0(out_lx, collapse = "\n")
 
   cat(out_lx, sep = "\n")
 
