@@ -35,6 +35,7 @@
 #' @import magrittr
 #' @import stats
 #' @import utils
+#' @import wooldridge
 #' @importFrom magrittr %>%
 #' @importFrom tibble as_tibble
 #' @importFrom dplyr rename
