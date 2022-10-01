@@ -16,6 +16,7 @@
 #' @param lm.tag character. Options for equation tag, default value "NULL".
 #' @param obs character. options for subscript, with options "obs = c('i', 't')",
 #'     and the default value is : obs = 'i'.
+#' @param u character. options for the disturbance term with default `u = "u"`.
 #' @param n.row integer. Numbers of variables in each row, default value 2
 #' @param no_dollar Logistic value. The equation environment
 #' should contains double dollars,  with default value "no_dollar = FALSE"
@@ -47,7 +48,7 @@ lx.psm <- function(x, y = "Y",
                    intercept = TRUE, begin =1,
                    greek.g = c("beta"), greek.n = length(x)+1,
                    type = "prm", lm.label=NULL, lm.tag = NULL,
-                   obs ="i",n.row=2,
+                   obs ="i", u = "u", n.row=2,
                    no_dollar = FALSE){
 
   # set start point and end point
@@ -89,7 +90,7 @@ lx.psm <- function(x, y = "Y",
 
 
   left <- stringr::str_replace_all(y,"\\_","\\\\_")
-  tail <- paste0("u_", obs)
+  tail <- paste0(paste0(u,"_"), obs)
   par <-  paste0("\\",par_list,"_{", par_index, "}")
 
 

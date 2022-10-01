@@ -15,6 +15,7 @@ lx.psm(
   lm.label = NULL,
   lm.tag = NULL,
   obs = "i",
+  u = "u",
   n.row = 2,
   no_dollar = FALSE
 )
@@ -44,6 +45,8 @@ type=c("prm","prf","srf","srm").}
 
 \item{obs}{character. options for subscript, with options "obs = c('i', 't')",
 and the default value is : obs = 'i'.}
+
+\item{u}{character. options for the disturbance term with default \code{u = "u"}.}
 
 \item{n.row}{integer. Numbers of variables in each row, default value 2}
 
