@@ -24,7 +24,6 @@ Imports: magrittr,
          tidyselect,
          purrr,
          stringr,
-         kwb.utils,
          fs,
          translateR,
          keyring,
@@ -34,3 +33,4 @@ Depends:
 Suggests: 
     testthat
 Remotes: ChristopherLucas/translateR
+         KWB-R/kwb.utils
