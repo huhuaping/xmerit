@@ -12,7 +12,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.3
 Imports: magrittr,
          dplyr,
          stats,
@@ -25,12 +25,14 @@ Imports: magrittr,
          purrr,
          stringr,
          fs,
-         translateR,
          keyring,
-         scales
+         scales,
+         translateR,
+         kwb.utils
 Depends: 
     R (>= 2.10)
 Suggests: 
     testthat
-Remotes: ChristopherLucas/translateR
-         KWB-R/kwb.utils
+Remotes: 
+    github::ChristopherLucas/translateR,
+    github::KWB-R/kwb.utils
