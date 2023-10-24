@@ -1,4 +1,4 @@
-#' Write latex math equation of lm estimation for rmarkdown file
+#' Write latex math equation of lm estimation for Quarto file
 #'
 #' @param lm.mod character.
 #' you should use `formula()` function
@@ -30,7 +30,7 @@
 #' should contains double dollars,  with default value "no_dollar = FALSE"
 #'
 #' @return out
-#' @export px.est
+#' @export qx.est
 #'
 #' @import magrittr
 #' @import stats
@@ -74,13 +74,13 @@
 #'
 #' mod_origin <- formula(lwage ~ educ_p_q + nwifeinc + exper + I(exper^2) + I(exper^2*city))
 #'
-#' px_out <- px.est(lm.mod = mod_origin, lm.dt = mroz_new)
+#' px_out <- qx.est(lm.mod = mod_origin, lm.dt = mroz_new)
 #'
-#' px_out2 <- px.est(lm.mod = mod_origin, lm.dt = mroz_new,
+#' px_out2 <- qx.est(lm.mod = mod_origin, lm.dt = mroz_new,
 #'   style = c('srf'),inf = c('over','fit','Ftest'),
 #'   lm.label = 'test-srm')
 #'
-px.est<- function(lm.mod, lm.dt, style="srf",
+qx.est<- function(lm.mod, lm.dt, style="srf",
                   lm.n = 3,
                   obs="i", opt=c("s", "t"),
                   inf = c(""),

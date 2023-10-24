@@ -1,4 +1,4 @@
-#' Write latex math equation of econometrics text for rmarkdown file
+#' Write latex math equation of econometrics text for Quarto file
 #'
 #'
 #' @param x character. Vector of all independent variables.
@@ -25,7 +25,7 @@
 #' @importFrom magrittr %>%
 #' @import tidyverse
 #' @return out
-#' @export px.psm
+#' @export qx.psm
 #' @examples
 #' X <- c(paste0(rep(c("X","Z"),each=4),1:4), "fathedu", "mothedu")
 #' Y <- "lwage"
@@ -36,7 +36,7 @@
 #' N.row <- 5
 #' Cst <- TRUE
 #'
-#' out <- px.psm(x =X, y = Y, begin =1,
+#' out <- qx.psm(x =X, y = Y, begin =1,
 #'   greek.g = Greek.g, greek.n = Greek.n,
 #'   type = "prm", intercept = Cst, lm.label = "prm",
 #'   obs = Obs, n.row = N.row )
@@ -44,7 +44,7 @@
 
 
 
-px.psm <- function(x, y = "Y",
+qx.psm <- function(x, y = "Y",
                    intercept = TRUE, begin =1,
                    greek.g = c("beta"), greek.n = length(x)+1,
                    type = "prm", lm.label=NULL, lm.tag = NULL,
