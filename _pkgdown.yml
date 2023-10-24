@@ -1,1 +1,20 @@
+home:
+  title: An R package for handy Econometrics teaching and research
+  description: Some facility tools for LaTex Equation hangdling and rendering for both Rmarkdown and Quarto.
 
+url: https://huhuaping.github.io/xmerit/
+template:
+  bootstrap: 5
+
+navbar:
+  components:
+    articles:
+      text: Articles
+      menu:
+      - text: Vignette
+        href: articles/Vignette.html
+      - text: Advanced
+        href: articles/guide.html
+
+development:
+  mode: auto

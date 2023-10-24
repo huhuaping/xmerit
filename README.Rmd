@@ -1,0 +1,155 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# xmerit
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of `xmerit` is to facility teaching and  researching on Econometrics. 
+
+## Installation
+
+You can install the development version of xmerit from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("huhuaping/xmerit")
+```
+
+## Example
+
+This is a basic example which shows you how to show math equation (`LaTex` equation) easily in Rmarkdown Writing.
+
+### Dataset and model
+
+```{r example, echo=TRUE}
+library(xmerit)
+data(mtcars)
+## basic example code
+
+df <- mtcars
+mod <- mpg ~ cyl + disp + wt +gear
+
+xvars <- all.vars(mod)[-1]
+yvars <- all.vars(mod)[1]
+
+lm.fit <- lm(formula = mod, data = df)
+summary(lm.fit)
+
+```
+
+### xmerit::lx.psm
+
+
+Here we will show the use of function `xmerit::lx.psm()`.
+
+
+#### R chunk
+
+```{r}
+#| results = 'asis',
+#| echo = TRUE,
+#| eval = FALSE
+
+lx.out <- xmerit::lx.psm(
+  x = xvars, y = yvars,
+  begin = 0,
+  #greek.n = length(xvars)+1,
+  n.row = 3,
+  lm.label = "lx-psm",
+  lm.tag = "lx.psm",
+  no_dollar = FALSE)
+```
+
+
+#### source style
+
+```
+$$\begin{align}
+\begin{split}
+mpg_i=&+\beta_{0}+\beta_{1}cyl_i+\beta_{2}disp_i\\&+\beta_{3}wt_i+\beta_{4}gear_i+u_i
+\end{split}
+\quad \text{(lx.psm)}\quad
+(\#eq:lx-psm)
+\end{align}$$
+
+The cross-reffer syntax of `see \@ref(eq:lx-psm)`  will be rendered as see \@ref(eq:lx-psm).
+```
+#### render effect
+
+$$\begin{align}
+\begin{split}
+mpg_i=&+\beta_{0}+\beta_{1}cyl_i+\beta_{2}disp_i\\&+\beta_{3}wt_i+\beta_{4}gear_i+u_i
+\end{split}
+\quad \text{(lx.psm)}\quad
+(\#eq:lx-psm)
+\end{align}$$
+
+The cross-reference syntax of `see \@ref(eq:lx-psm)`  will be rendered as see \@ref(eq:lx-psm).
+
+### xmerit::lx.est
+
+Now let me show the use of function `xmerit::lx.est()`.
+
+#### R chunk
+
+```{r}
+#| results = 'asis',
+#| echo = TRUE,
+#| eval = FALSE
+
+lx.out <- xmerit::lx.est(
+  lm.mod = mod, lm.dt = df,
+  lm.n = 3, lm.label = "lx-est", 
+  lm.tag = "lx.est",
+  no_dollar = FALSE)
+```
+
+
+#### source style
+
+```
+$$\begin{equation}
+\begin{alignedat}{999}
+&\widehat{mpg}=&&+43.54&&-1.78cyl_i&&+0.01disp_i\\ 
+&(s)&&(4.8601)&&(0.6139)&&(0.0120)\\ 
+&(t)&&(+8.96)&&(-2.91)&&(+0.58)\\ 
+&(cont.)&&-3.79wt_i&&-0.49gear_i &&\\ 
+&(s)&&(1.0818)&&(0.7903) &&\\ 
+&(t)&&(-3.51)&&(-0.62) &&
+\end{alignedat}
+\quad \text{(lx.est)}\quad
+(\#eq:lx-est)
+\end{equation}$$
+
+The cross-reference syntax of `see \@ref(eq:lx-est)`  will be rendered as see \@ref(eq:lx-est).
+```
+#### render effect
+
+$$\begin{equation}
+\begin{alignedat}{999}
+&\widehat{mpg}=&&+43.54&&-1.78cyl_i&&+0.01disp_i\\ 
+&(s)&&(4.8601)&&(0.6139)&&(0.0120)\\ 
+&(t)&&(+8.96)&&(-2.91)&&(+0.58)\\ 
+&(cont.)&&-3.79wt_i&&-0.49gear_i &&\\ 
+&(s)&&(1.0818)&&(0.7903) &&\\ 
+&(t)&&(-3.51)&&(-0.62) &&
+\end{alignedat}
+\quad \text{(lx.est)}\quad
+(\#eq:lx-est)
+\end{equation}$$
+
+The cross-reference syntax of `see \@ref(eq:lx-est)`  will be rendered as see \@ref(eq:lx-est).

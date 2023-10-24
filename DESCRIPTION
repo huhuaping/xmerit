@@ -32,7 +32,15 @@ Imports: magrittr,
 Depends: 
     R (>= 2.10)
 Suggests: 
+    knitr,
+    rmarkdown,
     testthat
 Remotes: 
     github::ChristopherLucas/translateR,
     github::KWB-R/kwb.utils
+VignetteBuilder: 
+    knitr
+URL: https://huhuaping.github.io/xmerit/
+Config/testthat/edition: 3
+Config/potools/style: explicit
+Config/Needs/website: rmarkdown,usethis, servr

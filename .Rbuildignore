@@ -8,3 +8,6 @@
 ^docs$
 ^pkgdown$
 ^data-raw$
+^\.github$
+^vignettes/articles$
+^README\.Rmd$
