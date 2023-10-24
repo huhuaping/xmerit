@@ -1,6 +1,6 @@
 Package: xmerit
 Title: Easy For Statistic And Econometrics Teaching
-Version: 0.0.12
+Version: 0.0.12.9001
 Authors@R: 
     person(given = "huaping",
            family = "hu",
