@@ -24,6 +24,8 @@ library(xmerit)
 
 - `bookdown`输出.docx以及xmerit包使用的实际公式语法和效果，都需要以上述`.Rmd`文档和`.docx`文件为最终依据和参照。
 
+- 因此Quarto输出格式html的语法显示将会不正常。
+
 ## Work Environment
 
 系统环境如下：
