@@ -12,7 +12,7 @@ navbar:
       text: Articles
       menu:
       - text: Vignette
-        href: articles/Vignette.html
+        href: articles/vignette.html
       - text: Advanced
         href: articles/guide.html
 
