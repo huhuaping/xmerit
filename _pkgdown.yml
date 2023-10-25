@@ -16,5 +16,3 @@ navbar:
       - text: Advanced
         href: articles/guide.html
 
-development:
-  mode: auto
