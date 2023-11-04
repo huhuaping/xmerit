@@ -1,6 +1,6 @@
 #' Write latex math equation of lm estimation for Quarto file
 #'
-#' @param lm.mod character.
+#' @param lm.mod formula.
 #' you should use `formula()` function
 #' @param lm.dt data.frame
 #' @param style character.

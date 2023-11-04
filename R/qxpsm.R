@@ -1,4 +1,4 @@
-#' Write latex math equation of econometrics text for Quarto file
+#' Write latex math equation for `lm` (P/S)R(M/F) in Quarto style
 #'
 #'
 #' @param x character. Vector of all independent variables.
@@ -166,7 +166,7 @@ qx.psm <- function(x, y = "Y",
            "",
            # default no equation label
            ifelse(is.null(lm.label),
-                  "",
+                  "$$",
                   paste0("$$",' {#eq-',lm.label,'}')
              )
            )
