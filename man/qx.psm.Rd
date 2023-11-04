@@ -2,7 +2,7 @@
 % Please edit documentation in R/qxpsm.R
 \name{qx.psm}
 \alias{qx.psm}
-\title{Write latex math equation of econometrics text for Quarto file}
+\title{Write latex math equation for \code{lm} (P/S)R(M/F) in Quarto style}
 \usage{
 qx.psm(
   x,
@@ -57,7 +57,7 @@ should contains double dollars,  with default value "no_dollar = FALSE"}
 out
 }
 \description{
-Write latex math equation of econometrics text for Quarto file
+Write latex math equation for \code{lm} (P/S)R(M/F) in Quarto style
 }
 \examples{
 X <- c(paste0(rep(c("X","Z"),each=4),1:4), "fathedu", "mothedu")

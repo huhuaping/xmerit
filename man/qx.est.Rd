@@ -19,7 +19,7 @@ qx.est(
 )
 }
 \arguments{
-\item{lm.mod}{character.
+\item{lm.mod}{formula.
 you should use \code{formula()} function}
 
 \item{lm.dt}{data.frame}
@@ -65,10 +65,9 @@ out
 Write latex math equation of lm estimation for Quarto file
 }
 \examples{
-require("magrittr")
-require("wooldridge")
-
-mroz_new <- wooldridge::mroz \%>\%
+library(wooldridge)
+data(mroz)
+mroz_new <- mroz \%>\%
   tibble::as_tibble() \%>\%
   dplyr::select(tidyselect::all_of(c("lwage", "educ", "exper", "fatheduc","motheduc")),
     tidyselect::everything()) \%>\%

@@ -10,9 +10,11 @@
 #'   string containing upper and lower case letters, numbers,
 #'   and dashes, such as `a4db08b7-5729-4ba9-8c08-f2df493465a1`.
 #'
-#' @import translateR
-#' @import keyring
-#' @import tibble
+#' @importFrom translateR translate
+#' @importFrom keyring key_get
+#' @importFrom tibble tibble
+#' @importFrom dplyr rename_at
+#' @importFrom dplyr select
 #'
 #' @return result
 #' @export gg_translate
@@ -48,7 +50,7 @@ gg_translate <- function(df, col_key, col_trans,ggkey){
       source.lang = "en",
       target.lang = "zh-CN")  %>%
     dplyr::select(tidyselect::all_of(names_tem)) %>%
-    rename_at(dplyr::vars(tidyselect::all_of(names_tem)),
+    dplyr::rename_at(dplyr::vars(tidyselect::all_of(names_tem)),
               ~tidyselect::all_of(names_new))
   return(result)
 }

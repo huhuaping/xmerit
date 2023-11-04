@@ -23,9 +23,15 @@
 #'
 #'
 #' @importFrom magrittr %>%
-#' @import tidyverse
+#' @importFrom stringr str_replace_all
+#' @importFrom dplyr filter
+#' @importFrom dplyr lag
+#' @importFrom dplyr mutate
+#'
 #' @return out
+#'
 #' @export lx.psm
+#'
 #' @examples
 #' X <- c(paste0(rep(c("X","Z"),each=4),1:4), "fathedu", "mothedu")
 #' Y <- "lwage"

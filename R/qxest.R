@@ -32,13 +32,13 @@
 #' @return out
 #' @export qx.est
 #'
-#' @import magrittr
-#' @import stats
-#' @import utils
 #' @import wooldridge
+#'
 #' @importFrom magrittr %>%
 #' @importFrom tibble as_tibble
 #' @importFrom dplyr rename
+#' @importFrom dplyr filter
+#' @importFrom dplyr lag
 #' @importFrom dplyr mutate_at
 #' @importFrom dplyr mutate_if
 #' @importFrom dplyr matches
@@ -59,13 +59,10 @@
 #' @importFrom purrr map
 #'
 #'
-#'
-#'
 #' @examples
-#' require("magrittr")
-#' require("wooldridge")
-#'
-#' mroz_new <- wooldridge::mroz %>%
+#' library(wooldridge)
+#' data(mroz)
+#' mroz_new <- mroz %>%
 #'   tibble::as_tibble() %>%
 #'   dplyr::select(tidyselect::all_of(c("lwage", "educ", "exper", "fatheduc","motheduc")),
 #'     tidyselect::everything()) %>%

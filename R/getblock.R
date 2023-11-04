@@ -5,7 +5,7 @@
 #'
 #' @return out
 #' @export get.block
-#' @import tidyverse
+#'
 #' @importFrom dplyr rename_at
 #' @importFrom dplyr mutate
 #' @importFrom dplyr bind_cols

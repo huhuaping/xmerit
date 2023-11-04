@@ -23,9 +23,31 @@
 #'
 #'
 #' @importFrom magrittr %>%
-#' @import tidyverse
+#' @importFrom tibble tibble
+#' @importFrom tibble as_tibble
+#' @importFrom dplyr rename
+#' @importFrom dplyr rename_at
+#' @importFrom dplyr rename_all
+#' @importFrom dplyr select
+#' @importFrom dplyr group_by
+#' @importFrom dplyr arrange
+#' @importFrom dplyr bind_cols
+#' @importFrom dplyr left_join
+#' @importFrom tidyr unnest
+#' @importFrom stringr str_count
+#' @importFrom stringr str_detect
+#' @importFrom stringr str_extract
+#' @importFrom stringr str_extract_all
+#' @importFrom stringr str_replace
+#' @importFrom stringr str_replace_all
+#' @importFrom stringr str_c
+#' @importFrom purrr map2
+#' @importFrom purrr map
+#'
 #' @return out
+#'
 #' @export qx.psm
+#'
 #' @examples
 #' X <- c(paste0(rep(c("X","Z"),each=4),1:4), "fathedu", "mothedu")
 #' Y <- "lwage"

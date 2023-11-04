@@ -35,6 +35,7 @@ get_excelcnv_exe <- function(office_folder = safe_office_folder()) {
 #' "C:/Program Files (x86)/Microsoft Office")
 #' @return path of office folder (if existing)
 #' @importFrom kwb.utils safePath
+
 safe_office_folder <- function(
   office_path = "C:/Program Files/Microsoft Office") {
   kwb.utils::safePath(office_path)

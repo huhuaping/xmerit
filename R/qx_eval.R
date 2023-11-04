@@ -23,10 +23,34 @@
 #' @param no_dollar Logistic value. The equation environment
 #' should contains double dollars,  with default value "no_dollar = FALSE"
 #'
-#' @return string
-#' @export prm.val
+#' @return latexout
+#'
+#' @importFrom magrittr %>%
+#' @importFrom tibble tibble
+#' @importFrom tibble as_tibble
+#' @importFrom dplyr rename
+#' @importFrom dplyr rename_at
+#' @importFrom dplyr rename_all
+#' @importFrom dplyr select
+#' @importFrom dplyr group_by
+#' @importFrom dplyr arrange
+#' @importFrom dplyr bind_cols
+#' @importFrom dplyr left_join
+#' @importFrom tidyr unnest
+#' @importFrom stringr str_count
+#' @importFrom stringr str_detect
+#' @importFrom stringr str_extract
+#' @importFrom stringr str_extract_all
+#' @importFrom stringr str_replace
+#' @importFrom stringr str_replace_all
+#' @importFrom stringr str_c
+#' @importFrom purrr map2
+#' @importFrom purrr map
+#'
+#' @export qx.eval
 #'
 #' @examples
+#' library("datasets")
 #' data(mtcars)
 #' dt_dummy <- mtcars %>%
 #'   dplyr::mutate(
@@ -45,15 +69,21 @@
 #'    gear_4 = 1, gear_5 = 0,
 #'    am_1 =1,  "log(wt)" = 1.5)
 #'
-#'  qx.out1 <- prm.val(type = "prf", list_val = val_init, begin =1)
-#'  qx.out2 <- prm.val(type = "srf", list_val = val_init, begin =2)
+#'  qx.out1 <- qx.eval(
+#'    lm.mod = mod_prod, lm.dt = dt_dummy,
+#'    list_val = val_init, type = "prf",
+#'    lm.n = 3, begin =1)
+#'  qx.out2 <- qx.eval(
+#'    lm.mod = mod_prod, lm.dt = dt_dummy,
+#'    list_val = val_init, type = "srf",
+#'    lm.n = 3, lm.label = "mtcars")
 
-prm.val <- function(
+qx.eval <- function(
     #list_val,  y = "Y",
-    lm.mod = mod_prod, lm.dt = dt_dummy,
+    lm.mod, lm.dt,
     list_val, Intercept = TRUE, type = "prf",
     begin = 1, greek.g = c("beta"),
-    lm.n = 3, digits = c(2),
+    lm.n = 2, digits = c(2),
     lm.label =NULL, lm.tag = NULL, no_dollar = FALSE){
 
   #==== model info ====
@@ -71,8 +101,8 @@ prm.val <- function(
 
   # change terms name
   x.trim <- x %>%
-    as_tibble() %>%
-    rename("vx"="value") %>%
+    tibble::as_tibble() %>%
+    dplyr::rename("vx"="value") %>%
     mutate(vars = ifelse(str_detect(vx, "^I\\(|Intercept"),
                          str_extract(vx, "(?<=\\()(.+)(?=\\))"),
                          vx)) %>%
@@ -83,8 +113,8 @@ prm.val <- function(
   # tidy the terms and unnest the intersections
   name_new <- c("c", "s", "t", "p")
   df <- coef %>%
-    as_tibble() %>%
-    rename_at(vars(names(.)), ~name_new) %>%  # rename
+    tibble::as_tibble() %>%
+    dplyr::rename_at(vars(names(.)), ~name_new) %>%  # rename
     bind_cols(x.trim, .)  %>%
     select(-c(s,t, p)) %>%
     mutate(cs = ifelse(c >0, "+", "-"), # get sign
@@ -98,18 +128,18 @@ prm.val <- function(
 
   ptn <- paste0(X_val_reg, collapse = "|")
   tbl_unnest <- df %>%
-    mutate(vs = str_extract_all(vx, ptn)) %>% # extract all X
-    unnest(cols = vs)
+    mutate(vs = stringr::str_extract_all(vx, ptn)) %>% # extract all X
+    tidyr::unnest(cols = vs)
 
   # construct the init value table
-  tbl_val <- as_tibble(list_val)  %>%
+  tbl_val <- tibble::as_tibble(list_val)  %>%
     t(.) %>%
     as.data.frame() %>%
-    rownames_to_column(var = "vs") %>%
-    rename_all(., ~c("vs", "value"))
+    tibble::rownames_to_column(var = "vs") %>%
+    dplyr::rename_all(., ~c("vs", "value"))
 
   # match X to terms table
-  tbl_match <- left_join(tbl_unnest, tbl_val, by = "vs")
+  tbl_match <- dplyr::left_join(tbl_unnest, tbl_val, by = "vs")
 
   # construct string
   tbl_str <- tbl_match %>%
@@ -120,14 +150,14 @@ prm.val <- function(
       ) %>%
     mutate(value_str = str_c("(", value_str, ")")) %>%
     # group str_c
-    group_by(vx) %>%
+    dplyr::group_by(vx) %>%
     mutate(str_group = str_c(value_str, collapse = "\\cdot")) %>%
     mutate(value_comb = prod(value)) %>%
-    ungroup()
+    dplyr::ungroup()
 
   tbl_tidy <- tbl_str %>%
     select(-vs, -value, -value_str) %>%
-    distinct()  %>%
+    dplyr::distinct()  %>%
     mutate(
       value_str = ifelse(
         (value_comb ==1 | value_comb == 0),
@@ -153,7 +183,7 @@ prm.val <- function(
   p_end <- greek.n
 
   # calculate all cases
-  df_n <- tibble(n=greek.n,
+  df_n <- tibble::tibble(n=greek.n,
                  part =paste0("P",1:length(greek.n))) %>%
     mutate(start = ifelse(part %in%c("P1"),
                           p_start, 1),
@@ -180,7 +210,7 @@ prm.val <- function(
   cond <- paste0(
     paste0(names(list_val)[index_cond], "=", unlist(list_val)[index_cond], sep = ""),
     collapse = "; ") %>%
-    str_replace_all(., "\\_", "\\\\_")
+    stringr::str_replace_all(., "\\_", "\\\\_")
 
   value_cond <- tbl_tidy$str_group  # value of condition
   value_comb <- tbl_tidy$value_str  # combination of the condition values
