@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">xmerit</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.13.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.13.9002</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -168,30 +168,13 @@ should contains double dollars,  with default value "no_dollar = FALSE"</p></dd>
 <span class="r-in"><span>   type <span class="op">=</span> <span class="st">"prf"</span>,</span></span>
 <span class="r-in"><span>   lm.n <span class="op">=</span> <span class="fl">3</span>, lm.label <span class="op">=</span> <span class="st">"prv-mtcars"</span>,</span></span>
 <span class="r-in"><span>   begin <span class="op">=</span><span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $$</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> \begin{aligned}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> \begin{split}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &amp;E(mpg^2|vs\_1=0; gear\_4=1; gear\_5=0; am\_1=1; log(wt)=1.5)\\</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> =&amp;+\beta_{1}(0) +\beta_{2}(1)\cdot(1) +\beta_{3}(0)\cdot(1)\\</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> =&amp;\beta_{2}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> \end{split}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> \end{aligned}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $$ {#eq-prv-mtcars}</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in set_names(syms(vars), fun(as.character(vars))):</span> The size of `nm` (2) must be compatible with the size of `x` (6).</span>
 <span class="r-in"><span> <span class="va">qx.out2</span> <span class="op">&lt;-</span> <span class="fu">qx.eval</span><span class="op">(</span></span></span>
 <span class="r-in"><span>   lm.mod <span class="op">=</span> <span class="va">mod_prod</span>, lm.dt <span class="op">=</span> <span class="va">dt_dummy</span>,</span></span>
 <span class="r-in"><span>   lm.val <span class="op">=</span> <span class="va">val_init</span>, Intercept <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>   type <span class="op">=</span> <span class="st">"srf"</span>,</span></span>
 <span class="r-in"><span>   lm.n <span class="op">=</span> <span class="fl">3</span>, lm.label <span class="op">=</span> <span class="st">"srv-mtcars"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $$</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> \begin{aligned}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> \begin{split}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &amp;(\widehat{mpg^2}|vs\_1=0; gear\_4=1; gear\_5=0; am\_1=1; log(wt)=1.5)\\</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> =&amp;+\hat{\beta}_{1}(0) +\hat{\beta}_{2}(1)\cdot(1) +\hat{\beta}_{3}(0)\cdot(1)\\</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> =&amp;+[278.89]\cdot (0)+[301.65]\cdot (1)\cdot(1)+[231.59]\cdot (0)\cdot(1)\\</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> =&amp;301.65</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> \end{split}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> \end{aligned}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $$ {#eq-srv-mtcars}</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in set_names(syms(vars), fun(as.character(vars))):</span> The size of `nm` (2) must be compatible with the size of `x` (6).</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
