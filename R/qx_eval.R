@@ -3,7 +3,7 @@
 #' @param lm.mod formula.
 #'    you should use `formula()` function
 #' @param lm.dt data.frame
-#' @param list_val list. the initiate value list.
+#' @param lm.val list. the initiate value list.
 #'    you should use the all the variables value. if the model contains the intercept,
 #'    then `Intercept = 1` must be included.
 #' @param Intercept logical. The default value `TRUE`
@@ -50,7 +50,7 @@
 #' @export qx.eval
 #'
 #' @examples
-#' library("datasets")
+#'
 #' data(mtcars)
 #' dt_dummy <- mtcars %>%
 #'   dplyr::mutate(
@@ -64,40 +64,57 @@
 #'       vs_0 = ifelse(vs==0, 1, 0) )
 #'
 #'  mod_prod <- formula(mpg^2 ~ -1 +vs_1 +(gear_4 +gear_5):am_1 +log(wt))
+#'  mod_prod <- formula(mpg^2 ~1 + vs_1 +(gear_4 +gear_5):am_1)
+#'
+#'  fit <- lm(formula = mod_prod, data = dt_dummy)
+#'
 #'  val_init <- list(
-#'    Intercept = 1, vs_1 = 0,
+#'    #Intercept = 1,
+#'    vs_1 = 0,
 #'    gear_4 = 1, gear_5 = 0,
-#'    am_1 =1,  "log(wt)" = 1.5)
+#'    am_1 =1,  "log(wt)" = 1.5
+#'    )
 #'
 #'  qx.out1 <- qx.eval(
 #'    lm.mod = mod_prod, lm.dt = dt_dummy,
-#'    list_val = val_init, type = "prf",
-#'    lm.n = 3, begin =1)
+#'    lm.val = val_init, Intercept = FALSE,
+#'    type = "prf",
+#'    lm.n = 3, lm.label = "prv-mtcars",
+#'    begin =1)
 #'  qx.out2 <- qx.eval(
 #'    lm.mod = mod_prod, lm.dt = dt_dummy,
-#'    list_val = val_init, type = "srf",
-#'    lm.n = 3, lm.label = "mtcars")
+#'    lm.val = val_init, Intercept = FALSE,
+#'    type = "srf",
+#'    lm.n = 3, lm.label = "srv-mtcars")
 
 qx.eval <- function(
-    #list_val,  y = "Y",
+    #lm.val,  y = "Y",
     lm.mod, lm.dt,
-    list_val, Intercept = TRUE, type = "prf",
+    lm.val, Intercept = TRUE, type = "prf",
     begin = 1, greek.g = c("beta"),
     lm.n = 2, digits = c(2),
     lm.label =NULL, lm.tag = NULL, no_dollar = FALSE){
 
   #==== model info ====
   # get the full init names of list
-  X_val <- names(list_val)
+  X_val <- names(lm.val)
   # OLS estimate
   ols.est <- lm(formula = lm.mod, data = lm.dt)
   result <- summary(ols.est)
 
   # model names of Y
   y <- names(model.frame(ols.est))[1]
-  #X <- all.vars(lm.mod)[-1]
-  coef <- result$coefficients
-  x <- rownames(coef)
+  # keep order as the formula,
+  ## but this will not contains the intercept whenever you explicit `1` in the formula
+  x <-labels(terms(lm.mod, keep.order = TRUE))
+  # add the Intercept term
+  if (isTRUE(Intercept)) {
+    x <- c("(Intercept)", x)
+  }
+
+  coef <- as.data.frame(result$coefficients) %>%
+    tibble::rownames_to_column(var = "terms") %>%
+    .[match(x, .$terms),]  # make sure order and match
 
   # change terms name
   x.trim <- x %>%
@@ -111,20 +128,20 @@ qx.eval <- function(
     mutate(vars = str_replace_all(vars, " ", ""))
 
   # tidy the terms and unnest the intersections
-  name_new <- c("c", "s", "t", "p")
+  name_new <- c("terms","c", "s", "t", "p")
   df <- coef %>%
     tibble::as_tibble() %>%
     dplyr::rename_at(vars(names(.)), ~name_new) %>%  # rename
-    bind_cols(x.trim, .)  %>%
-    select(-c(s,t, p)) %>%
+    dplyr::bind_cols(x.trim, .)  %>%
+    select(-c(terms, s, t, p)) %>%
     mutate(cs = ifelse(c >0, "+", "-"), # get sign
            cv = abs(c)   # absolute value
            )
 
   # extract X and unnest
   X_val_reg <- X_val %>%
-    str_replace_all(., "\\(",  "\\\\(") %>%
-    str_replace_all(., "\\)",  "\\\\)")
+    stringr::str_replace_all(., "\\(",  "\\\\(") %>%
+    stringr::str_replace_all(., "\\)",  "\\\\)")
 
   ptn <- paste0(X_val_reg, collapse = "|")
   tbl_unnest <- df %>%
@@ -132,7 +149,7 @@ qx.eval <- function(
     tidyr::unnest(cols = vs)
 
   # construct the init value table
-  tbl_val <- tibble::as_tibble(list_val)  %>%
+  tbl_val <- tibble::as_tibble(lm.val)  %>%
     t(.) %>%
     as.data.frame() %>%
     tibble::rownames_to_column(var = "vs") %>%
@@ -178,7 +195,7 @@ qx.eval <- function(
 
 # ==== latex prepare====
   # set start point and end point
-  greek.n <- length(x) +1
+  greek.n <- length(x)
   p_start <- begin
   p_end <- greek.n
 
@@ -200,15 +217,15 @@ qx.eval <- function(
   # case if exist intercept or not
   if (isTRUE(Intercept)){
     index <- par_index[-1]
-    index_cond <- 2:length(list_val)   # for conditions
+    index_cond <- 2:length(lm.val)   # for conditions
   } else if (!isTRUE(Intercept)) {
     index <- par_index
-    index_cond <- 1:length(list_val) # for conditions
+    index_cond <- 1:length(lm.val) # for conditions
   }
 
 
   cond <- paste0(
-    paste0(names(list_val)[index_cond], "=", unlist(list_val)[index_cond], sep = ""),
+    paste0(names(lm.val)[index_cond], "=", unlist(lm.val)[index_cond], sep = ""),
     collapse = "; ") %>%
     stringr::str_replace_all(., "\\_", "\\\\_")
 

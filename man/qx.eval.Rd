@@ -7,7 +7,7 @@
 qx.eval(
   lm.mod,
   lm.dt,
-  list_val,
+  lm.val,
   Intercept = TRUE,
   type = "prf",
   begin = 1,
@@ -25,7 +25,7 @@ you should use \code{formula()} function}
 
 \item{lm.dt}{data.frame}
 
-\item{list_val}{list. the initiate value list.
+\item{lm.val}{list. the initiate value list.
 you should use the all the variables value. if the model contains the intercept,
 then \code{Intercept = 1} must be included.}
 
@@ -61,7 +61,7 @@ latexout
 Write latex math equation for \code{lm} (P/S)R(M/F) with initiate value in Quarto style
 }
 \examples{
-library("datasets")
+
 data(mtcars)
 dt_dummy <- mtcars \%>\%
   dplyr::mutate(
@@ -75,17 +75,26 @@ dt_dummy <- mtcars \%>\%
       vs_0 = ifelse(vs==0, 1, 0) )
 
  mod_prod <- formula(mpg^2 ~ -1 +vs_1 +(gear_4 +gear_5):am_1 +log(wt))
+ mod_prod <- formula(mpg^2 ~1 + vs_1 +(gear_4 +gear_5):am_1)
+
+ fit <- lm(formula = mod_prod, data = dt_dummy)
+
  val_init <- list(
-   Intercept = 1, vs_1 = 0,
+   #Intercept = 1,
+   vs_1 = 0,
    gear_4 = 1, gear_5 = 0,
-   am_1 =1,  "log(wt)" = 1.5)
+   am_1 =1,  "log(wt)" = 1.5
+   )
 
  qx.out1 <- qx.eval(
    lm.mod = mod_prod, lm.dt = dt_dummy,
-   list_val = val_init, type = "prf",
-   lm.n = 3, begin =1)
+   lm.val = val_init, Intercept = FALSE,
+   type = "prf",
+   lm.n = 3, lm.label = "prv-mtcars",
+   begin =1)
  qx.out2 <- qx.eval(
    lm.mod = mod_prod, lm.dt = dt_dummy,
-   list_val = val_init, type = "srf",
-   lm.n = 3, lm.label = "mtcars")
+   lm.val = val_init, Intercept = FALSE,
+   type = "srf",
+   lm.n = 3, lm.label = "srv-mtcars")
 }
