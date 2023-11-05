@@ -149,9 +149,8 @@ qx.eval <- function(
     tidyr::unnest(cols = vs)
 
   # construct the init value table
-  tbl_val <- tibble::as_tibble(lm.val)  %>%
-    t(.) %>%
-    as.data.frame() %>%
+  tbl_val <- lm.val  %>%
+    as.data.frame(.) %>%
     tibble::rownames_to_column(var = "vs") %>%
     dplyr::rename_all(., ~c("vs", "value"))
 
