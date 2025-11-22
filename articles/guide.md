@@ -1,0 +1,55 @@
+# Addvanced usage
+
+``` r
+library(xmerit)
+#> Warning: replacing previous import 'stats::filter' by 'dplyr::filter' when
+#> loading 'xmerit'
+#> Warning: replacing previous import 'stats::lag' by 'dplyr::lag' when loading
+#> 'xmerit'
+```
+
+## The package develop html and the Rendered output
+
+本站点页面均由`pkgdown`包对`.Rmd`源文档通过`Rmarkdown`和`knitr`渲染为html格式。
+
+基于上述原因：
+
+- 本html页面仅当作对源`.Rmd`文档内容的展示之目的，这里渲染显示的公式、标号及引用的最终效果也仅作观摩参考。
+
+- `bookdown`输出.docx以及xmerit包使用的实际公式语法和效果，都需要以上述`.Rmd`文档和`.docx`文件为最终依据和参照。
+
+- 因此Quarto输出格式html的语法显示将会不正常。
+
+### Work Environment
+
+系统环境如下：
+
+``` r
+R.version
+session <- utils::sessionInfo()
+```
+
+    platform       x86_64-w64-mingw32               
+    arch           x86_64                           
+    os             mingw32                          
+    crt            ucrt                             
+    system         x86_64, mingw32                  
+    status                                          
+    major          4                                
+    minor          3.1                              
+    year           2023                             
+    month          06                               
+    day            16                               
+    svn rev        84548                            
+    language       R                                
+    version.string R version 4.3.1 (2023-06-16 ucrt)
+    nickname       Beagle Scouts
+
+相关R包版本如下：
+
+``` r
+pkg <- list(rmarkdown = "rmarkdown", 
+            bookdown = "bookdown", 
+            xmerit = "xmerit")
+sapply(pkg, packageVersion)
+```
