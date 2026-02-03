@@ -48,6 +48,9 @@
 - [`num_round()`](https://huhuaping.github.io/xmerit/reference/num_round.md)
   : formatC for convenient
 
+- [`opt_line()`](https://huhuaping.github.io/xmerit/reference/opt_line.md)
+  : Generate one or more lines of questionnaire option items
+
 - [`qx.est()`](https://huhuaping.github.io/xmerit/reference/qx.est.md) :
   Write latex math equation of lm estimation for Quarto file
 
