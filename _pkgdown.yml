@@ -13,7 +13,7 @@ navbar:
       menu:
       - text: Vignette
         href: articles/vignette.html
-      - text: opt_line(): Design choice items lines for questionnaire
+      - text: "opt_line(): Design choice items lines for questionnaire"
         href: articles/opt_line.html
       - text: Advanced
         href: articles/guide.html
