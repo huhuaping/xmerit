@@ -1,6 +1,5 @@
-# Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
-# - main: deploy docs/ to gh-pages root (production site)
-# - dev:  deploy docs/ to gh-pages/dev/ (preview at .../xmerit/dev/)
+# 优化版 pkgdown 工作流
+# 目标：缩减构建时间，统一部署逻辑
 on:
   push:
     branches: [main, dev]
@@ -15,15 +14,21 @@ name: pkgdown
 jobs:
   pkgdown:
     runs-on: ubuntu-latest
-    # Only restrict concurrency for non-PR jobs
+    # 限制并发，防止同一分支多次运行浪费资源
     concurrency:
       group: pkgdown-${{ github.event_name != 'pull_request' || github.run_id }}
+    
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+
     permissions:
       contents: write
+
     steps:
-      - uses: actions/checkout@v3
+      # 优化 1: 升级 v4 并使用浅克隆 (Shallow Clone)
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
       - uses: r-lib/actions/setup-pandoc@v2
 
@@ -31,33 +36,32 @@ jobs:
         with:
           use-public-rspm: true
 
+      # 优化 2: 移除冗余的 needs 参数，利用默认的高效缓存
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::pkgdown, local::.
-          needs: website
+
+      # 优化 3: 预设部署路径变量
+      - name: Set deployment variables
+        run: |
+          if [ "${{ github.ref }}" = "refs/heads/dev" ]; then
+            echo "DEPLOY_DIR=dev" >> $GITHUB_ENV
+            echo "PKG_URL=https://huhuaping.github.io/xmerit/dev/" >> $GITHUB_ENV
+          else
+            echo "DEPLOY_DIR=." >> $GITHUB_ENV
+            echo "PKG_URL=https://huhuaping.github.io/xmerit/" >> $GITHUB_ENV
+          fi
 
       - name: Build site
         run: |
-          if [ "${{ github.ref }}" = "refs/heads/dev" ]; then
-            Rscript -e "pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE, override = list(url = 'https://huhuaping.github.io/xmerit/dev/'))"
-          else
-            Rscript -e "pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)"
-          fi
+          Rscript -e "pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE, override = list(url = '${{ env.PKG_URL }}'))"
 
-      - name: Deploy to GitHub Pages (main)
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-        uses: JamesIves/github-pages-deploy-action@v4.4.1
+      # 优化 4: 统一使用一个部署 Action
+      - name: Deploy to GitHub Pages
+        if: github.event_name != 'pull_request'
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          clean: false
           branch: gh-pages
           folder: docs
-
-      - name: Deploy to GitHub Pages (dev preview)
-        if: github.ref == 'refs/heads/dev' && github.event_name != 'pull_request'
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
-          destination_dir: dev
-          branch: gh-pages
-          keep_files: true
+          target-folder: ${{ env.DEPLOY_DIR }}
+          clean: false # dev 分支部署时不清除根目录下的 main 文档
