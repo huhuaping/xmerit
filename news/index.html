@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">xmerit</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.14</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.14.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,6 +19,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/vignette.html">Vignette</a></li>
+    <li><a class="dropdown-item" href="../articles/opt_line.html">opt_line(): Design choice items lines for questionnaire</a></li>
     <li><a class="dropdown-item" href="../articles/guide.html">Advanced</a></li>
   </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -37,18 +38,37 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="development version" id="xmerit-development-version">xmerit (development version)<a class="anchor" aria-label="anchor" href="#xmerit-development-version"></a></h2>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.14" id="xmerit-0014">xmerit 0.0.14<a class="anchor" aria-label="anchor" href="#xmerit-0014"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-0-14">New features<a class="anchor" aria-label="anchor" href="#new-features-0-0-14"></a></h3>
+<ul><li><p><strong>opt_line()</strong>: New function to generate one or more lines of questionnaire option items in Quarto (.qmd). Supports checkbox style (HTML: <code>&lt;input type="checkbox"&gt;</code>; Word: Unicode ballot box) and letter style (A. B. C.). Optional line wrapping by display width for A4-friendly layout. See vignette “opt_line(): 问卷题项选项行” and <code><a href="../reference/opt_line.html">?opt_line</a></code>.</p></li>
+<li><p><strong>Vignette</strong>: New article “opt_line()” under Articles on the pkgdown site, with usage, styles (checkbox/letter), wrapping, and Quarto integration.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-0-0-14">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-0-14"></a></h3>
+<ul><li>
+<strong>qx.eval()</strong>: Fixed error when building the init-value table from <code>lm.val</code> (<code>rename_all</code> column count mismatch). Now constructs the two-column table with <code>tibble(vs = names(lm.val), value = unlist(lm.val, use.names = FALSE))</code>.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="miscellaneous-0-0-14">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-0-14"></a></h3>
+<ul><li><p><strong>R CMD check</strong>: Replaced <code>@import stats</code> with <code>@importFrom stats lm formula model.frame terms</code> in <code>lx.est</code> to avoid conflict with dplyr’s <code>filter</code>/<code>lag</code>. Added <code>@importFrom stats pf</code> in <code>lm.pf</code>. Declared <code>start</code> and <code>end</code> in <code><a href="https://rdrr.io/r/utils/globalVariables.html" class="external-link">utils::globalVariables()</a></code> for <code>qx.eval</code>, <code>qx.psm</code>, and <code>lx.psm</code> (column names in pipelines).</p></li>
+<li><p><strong>.Rbuildignore</strong>: Added <code>^prompts$</code> so the top-level <code>prompts</code> directory is not shipped with the package.</p></li>
+<li><p><strong>pkgdown workflow</strong>: CI now triggers only on branch <code>main</code> (removed <code>master</code>).</p></li>
+</ul><hr></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.13.9001" id="xmerit-00139001">xmerit 0.0.13.9001<a class="anchor" aria-label="anchor" href="#xmerit-00139001"></a></h2>
 <div class="section level3">
-<h3 id="news-0-0-13-9001">news<a class="anchor" aria-label="anchor" href="#news-0-0-13-9001"></a></h3>
-<ul><li>support PRV and SRV evaluation for PRF and SRF, which compact with Quato equation.</li>
+<h3 id="new-features-0-0-13-9001">New features<a class="anchor" aria-label="anchor" href="#new-features-0-0-13-9001"></a></h3>
+<ul><li>Support PRV and SRV evaluation for PRF and SRF, compatible with Quarto equation.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="bug-fixes-0-0-13-9001">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-0-13-9001"></a></h3>
-<ul><li><p>fixed the wrong order of <code>lm</code> terms.</p></li>
-<li><p>fixed the wrong Greek symbols and surfix number.</p></li>
+<h3 id="bug-fixes-0-0-13-9001">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-0-13-9001"></a></h3>
+<ul><li><p>Fixed the wrong order of <code>lm</code> terms.</p></li>
+<li><p>Fixed the wrong Greek symbols and suffix number.</p></li>
 </ul></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

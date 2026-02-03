@@ -3,8 +3,9 @@ pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   articles/guide: guide.html
+  articles/opt_line: opt_line.html
   vignette: vignette.html
-last_built: 2026-02-03T14:58Z
+last_built: 2026-02-03T15:43Z
 urls:
   reference: https://huhuaping.github.io/xmerit/reference
   article: https://huhuaping.github.io/xmerit/articles
