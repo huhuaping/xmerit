@@ -176,7 +176,7 @@ idx_to_letter <- function(i) {
 #'
 #' # Letter style
 #' opt_line(c("Yes", "No"), style = "letter")
-#' opt_line(c("Yes", "No"), style = "letter", letter_sep = ", ")
+#' opt_line(c("Yes", "No"), style = "letter", letter_sep = ". ")
 opt_line <- function(options,
                     gap_n = 8L,
                     style = NULL,

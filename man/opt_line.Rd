@@ -71,5 +71,5 @@ opt_line(c("Too expensive", "No need", "Good health"),
 
 # Letter style
 opt_line(c("Yes", "No"), style = "letter")
-opt_line(c("Yes", "No"), style = "letter", letter_sep = ", ")
+opt_line(c("Yes", "No"), style = "letter", letter_sep = ". ")
 }

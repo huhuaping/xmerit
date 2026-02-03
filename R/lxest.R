@@ -33,8 +33,8 @@
 #' @export lx.est
 #'
 #' @import magrittr
-#' @import stats
 #' @import utils
+#' @importFrom stats lm formula model.frame terms
 #' @import wooldridge
 #' @importFrom magrittr %>%
 #' @importFrom tibble as_tibble

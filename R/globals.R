@@ -7,4 +7,4 @@ utils::globalVariables(c("part", "n","dif", "n_max"))
 
 utils::globalVariables(c("lwr", "s1", "s2", "upr")) # eval_credit.R
 
-utils::globalVariables(c("p", "s", "value_str","vs")) # qx_eval.R
+utils::globalVariables(c("p", "s", "value_str","vs", "start", "end")) # qx_eval.R, qx.psm, lx.psm

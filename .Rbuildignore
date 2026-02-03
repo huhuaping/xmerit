@@ -9,5 +9,6 @@
 ^pkgdown$
 ^data-raw$
 ^\.github$
+^prompts$
 ^vignettes/articles$
 ^README\.Rmd$

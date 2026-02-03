@@ -5,6 +5,7 @@
 #'
 #' @export lm.pf
 #' @return out
+#' @importFrom stats pf
 #'
 #'
 

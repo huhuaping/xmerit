@@ -148,11 +148,11 @@ qx.eval <- function(
     mutate(vs = stringr::str_extract_all(vx, ptn)) %>% # extract all X
     tidyr::unnest(cols = vs)
 
-  # construct the init value table
-  tbl_val <- lm.val  %>%
-    as.data.frame(.) %>%
-    tibble::rownames_to_column(var = "vs") %>%
-    dplyr::rename_all(., ~c("vs", "value"))
+  # construct the init value table (named list -> 2-col: vs, value)
+  tbl_val <- tibble::tibble(
+    vs = names(lm.val),
+    value = unlist(lm.val, use.names = FALSE)
+  )
 
   # match X to terms table
   tbl_match <- dplyr::left_join(tbl_unnest, tbl_val, by = "vs")
