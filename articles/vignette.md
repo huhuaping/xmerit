@@ -2,10 +2,6 @@
 
 ``` r
 library(xmerit)
-#> Warning: replacing previous import 'stats::filter' by 'dplyr::filter' when
-#> loading 'xmerit'
-#> Warning: replacing previous import 'stats::lag' by 'dplyr::lag' when loading
-#> 'xmerit'
 ```
 
 ## The LaTex Equation hangdling and rendering

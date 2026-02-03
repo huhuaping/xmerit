@@ -1,6 +1,6 @@
 # Changelog
 
-## xmerit (development version)
+## xmerit 0.0.14
 
 ## xmerit 0.0.13.9001
 

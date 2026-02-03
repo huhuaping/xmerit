@@ -89,6 +89,6 @@ opt_line(c("Too expensive", "No need", "Good health"),
 # Letter style
 opt_line(c("Yes", "No"), style = "letter")
 #> [1] "A. Yes        B. No"
-opt_line(c("Yes", "No"), style = "letter", letter_sep = ", ")
-#> [1] "A, Yes        B, No"
+opt_line(c("Yes", "No"), style = "letter", letter_sep = ". ")
+#> [1] "A. Yes        B. No"
 ```

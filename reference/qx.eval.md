@@ -117,11 +117,28 @@ dt_dummy <- mtcars %>%
    type = "prf",
    lm.n = 3, lm.label = "prv-mtcars",
    begin =1)
-#> Error in set_names(syms(vars), fun(as.character(vars))): The size of `nm` (2) must be compatible with the size of `x` (6).
+#> $$
+#> \begin{aligned}
+#> \begin{split}
+#> &E(mpg^2|vs\_1=0; gear\_4=1; gear\_5=0; am\_1=1; log(wt)=1.5)\\
+#> =&+\beta_{1}(0) +\beta_{2}(1)\cdot(1) +\beta_{3}(0)\cdot(1)\\
+#> =&\beta_{2}
+#> \end{split}
+#> \end{aligned}
+#> $$ {#eq-prv-mtcars}
  qx.out2 <- qx.eval(
    lm.mod = mod_prod, lm.dt = dt_dummy,
    lm.val = val_init, Intercept = FALSE,
    type = "srf",
    lm.n = 3, lm.label = "srv-mtcars")
-#> Error in set_names(syms(vars), fun(as.character(vars))): The size of `nm` (2) must be compatible with the size of `x` (6).
+#> $$
+#> \begin{aligned}
+#> \begin{split}
+#> &(\widehat{mpg^2}|vs\_1=0; gear\_4=1; gear\_5=0; am\_1=1; log(wt)=1.5)\\
+#> =&+\hat{\beta}_{1}(0) +\hat{\beta}_{2}(1)\cdot(1) +\hat{\beta}_{3}(0)\cdot(1)\\
+#> =&+[278.89]\cdot (0)+[301.65]\cdot (1)\cdot(1)+[231.59]\cdot (0)\cdot(1)\\
+#> =&301.65
+#> \end{split}
+#> \end{aligned}
+#> $$ {#eq-srv-mtcars}
 ```
