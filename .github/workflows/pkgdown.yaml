@@ -1,3 +1,5 @@
+# 优化版 pkgdown 工作流
+# 目标：缩减构建时间，统一部署逻辑
 on:
   push:
     branches: [main, dev]
@@ -12,28 +14,34 @@ name: pkgdown
 jobs:
   pkgdown:
     runs-on: ubuntu-latest
+    # 限制并发，防止同一分支多次运行浪费资源
     concurrency:
       group: pkgdown-${{ github.event_name != 'pull_request' || github.run_id }}
     
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      # 优化 1: 强制 renv 使用 RSPM 二进制包仓库，避免 Linux 上的源码编译耗时
-      RENV_CONFIG_REPOS_OVERRIDE: https://packagemanager.posit.co/cran/__linux__/jammy/latest
 
     permissions:
       contents: write
 
     steps:
+      # 优化 1: 升级 v4 并使用浅克隆 (Shallow Clone)
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
-      # 优化 2: 使用专门针对 renv 的 setup-renv 替代 setup-r-dependencies
-      # 它会自动处理 R、Pandoc 以及 renv 库的自动缓存（通常比手动配置更可靠）
-      - uses: r-lib/actions/setup-renv@v2
-        with:
-          cache-version: 2 # 遇到环境问题时可通过修改此数字强制刷新缓存
+      - uses: r-lib/actions/setup-pandoc@v2
 
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      # 优化 2: 移除冗余的 needs 参数，利用默认的高效缓存
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::pkgdown, local::.
+
+      # 优化 3: 预设部署路径变量
       - name: Set deployment variables
         run: |
           if [ "${{ github.ref }}" = "refs/heads/dev" ]; then
@@ -45,12 +53,10 @@ jobs:
           fi
 
       - name: Build site
-        shell: Rscript {0}
         run: |
-          # 优化 3: 显式检查并确保 pkgdown 在 renv 环境中可用
-          if (!requireNamespace("pkgdown", quietly = TRUE)) install.packages("pkgdown")
-          pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE, override = list(url = '${{ env.PKG_URL }}'))
+          Rscript -e "pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE, override = list(url = '${{ env.PKG_URL }}'))"
 
+      # 优化 4: 统一使用一个部署 Action
       - name: Deploy to GitHub Pages
         if: github.event_name != 'pull_request'
         uses: JamesIves/github-pages-deploy-action@v4
@@ -58,4 +64,4 @@ jobs:
           branch: gh-pages
           folder: docs
           target-folder: ${{ env.DEPLOY_DIR }}
-          clean: false
+          clean: false # dev 分支部署时不清除根目录下的 main 文档
